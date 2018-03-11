@@ -16,7 +16,6 @@ import java.net.InetSocketAddress;
 import java.net.NetworkInterface;
 import java.util.concurrent.TimeUnit;
 
-//import org.fluentd.logger.FluentLogger;
 import org.json.simple.JSONObject;
 import ws.wamp.jawampa.WampClient;
 import ws.wamp.jawampa.WampClientBuilder;
@@ -24,20 +23,17 @@ import ws.wamp.jawampa.connection.IWampConnectorProvider;
 import ws.wamp.jawampa.transport.netty.NettyWampClientConnectorProvider;
 
 import com.lmax.disruptor.dsl.Disruptor;
-import com.lmax.disruptor.RingBuffer;
-import java.nio.ByteBuffer;
+
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
+
 
 import org.jvirtanen.config.Configs;
 
 public class TradeRouter {
 
-//    private static FluentLogger LOG = FluentLogger.getLogger("app");
     private static final String USAGE = "parity-router [-t] <configuration-file>";
-    private static WampClient client1;
-    private static Disruptor<PMREvent> disruptor;
-    private static PMREventProducer eventProducer;
+    private static WampClient wampclt;
 
     private static void initWampClient(String url, String realm) {
         try {
@@ -52,8 +48,8 @@ public class TradeRouter {
 
             // Create a client through the builder. This will not immediatly start
             // a connection attempt
-            client1 = builder.build();
-            client1.open();
+            wampclt = builder.build();
+            wampclt.open();
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -61,19 +57,10 @@ public class TradeRouter {
         }
     }
 
-    public static void handleEvent(PMREvent event, long sequence, boolean endOfBatch)
+    public static void handleEvent(MarketEvent event, long sequence, boolean endOfBatch)
     {
-        Trade t = event.get();
-        JSONObject obj = new JSONObject();
-        obj.put("timestamp", t.timestamp);
-        obj.put("instrument", t.instrument);
-        obj.put("quantity", t.quantity);
-        obj.put("price", t.price);
-
-        // create json object and send it
-        client1.publish("data", obj);
-//        LOG.log("data", obj);
-
+        JSONObject obj = event.get().toJSON();
+        wampclt.publish("data", obj);
     }
 
     public static void main(String[] args) {
@@ -110,7 +97,7 @@ public class TradeRouter {
         int bufferSize = 1024;
 
         // Construct the Disruptor
-        Disruptor<PMREvent> disruptor = new Disruptor<>(PMREvent::new, bufferSize, executor);
+        Disruptor<MarketEvent> disruptor = new Disruptor<>(MarketEvent::new, bufferSize, executor);
 
         // Connect the handler
         disruptor.handleEventsWith(TradeRouter::handleEvent);
@@ -119,12 +106,13 @@ public class TradeRouter {
         disruptor.start();
 
         // initialize the event producer to submit messages
-        eventProducer  = new PMREventProducer(disruptor);
-
-        initWampClient("ws://localhost:8080/ws1", "realm1");
-
         MessageListener listener = new PMRParser(new TradeProcessor(tsv ?
-                new JsonFormat(instruments, eventProducer) : new DisplayFormat(instruments)));
+                new MarketEventProducer(disruptor) : new DisplayFormat(instruments)));
+
+        String routerUrl = config.getString("wamp-router.url");
+        String routerRealm = config.getString("wamp-router.realm");
+        // init WAMP Client: connect to WAMP router
+        initWampClient(routerUrl, routerRealm);
 
         if (config.hasPath("trade-report.multicast-interface")) {
             NetworkInterface multicastInterface = Configs.getNetworkInterface(config, "trade-report.multicast-interface");
@@ -144,7 +132,7 @@ public class TradeRouter {
             SoupBinTCP.receive(new InetSocketAddress(address, port), username, password, listener);
         }
 
-        client1.close().toBlocking().last();
+        wampclt.close().toBlocking().last();
 
     }
 

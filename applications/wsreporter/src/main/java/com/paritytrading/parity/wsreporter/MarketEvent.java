@@ -1,9 +1,11 @@
 package com.paritytrading.parity.wsreporter;
 
+import com.lmax.disruptor.EventFactory;
+
 import java.util.HashMap;
 import java.util.Map;
 
-public class PMREvent {
+public class MarketEvent {
 
     private Trade val;
 
@@ -26,4 +28,10 @@ public class PMREvent {
 
         return data;
     }
+
+    public final static EventFactory<MarketEvent> EVENT_FACTORY = new EventFactory<MarketEvent>() {
+        public MarketEvent newInstance() {
+            return new MarketEvent();
+        }
+    };
 }

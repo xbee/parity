@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/libraries/fluent-logger-java/fluent-logger.iml" filepath="$PROJECT_DIR$/libraries/fluent-logger-java/fluent-logger.iml" />
+      <module fileurl="file://$PROJECT_DIR$/libraries/book/parity-book.iml" filepath="$PROJECT_DIR$/libraries/book/parity-book.iml" />
+      <module fileurl="file://$PROJECT_DIR$/tests/book-perf-test/parity-book-perf-test.iml" filepath="$PROJECT_DIR$/tests/book-perf-test/parity-book-perf-test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/applications/client/parity-client.iml" filepath="$PROJECT_DIR$/applications/client/parity-client.iml" />
+      <module fileurl="file://$PROJECT_DIR$/libraries/file/parity-file.iml" filepath="$PROJECT_DIR$/libraries/file/parity-file.iml" />
+      <module fileurl="file://$PROJECT_DIR$/applications/fix/parity-fix.iml" filepath="$PROJECT_DIR$/applications/fix/parity-fix.iml" />
+      <module fileurl="file://$PROJECT_DIR$/libraries/match/parity-match.iml" filepath="$PROJECT_DIR$/libraries/match/parity-match.iml" />
+      <module fileurl="file://$PROJECT_DIR$/tests/match-perf-test/parity-match-perf-test.iml" filepath="$PROJECT_DIR$/tests/match-perf-test/parity-match-perf-test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/libraries/net/parity-net.iml" filepath="$PROJECT_DIR$/libraries/net/parity-net.iml" />
+      <module fileurl="file://$PROJECT_DIR$/parity-parent.iml" filepath="$PROJECT_DIR$/parity-parent.iml" />
+      <module fileurl="file://$PROJECT_DIR$/applications/reporter/parity-reporter.iml" filepath="$PROJECT_DIR$/applications/reporter/parity-reporter.iml" />
+      <module fileurl="file://$PROJECT_DIR$/applications/system/parity-system.iml" filepath="$PROJECT_DIR$/applications/system/parity-system.iml" />
+      <module fileurl="file://$PROJECT_DIR$/applications/ticker/parity-ticker.iml" filepath="$PROJECT_DIR$/applications/ticker/parity-ticker.iml" />
+      <module fileurl="file://$PROJECT_DIR$/libraries/util/parity-util.iml" filepath="$PROJECT_DIR$/libraries/util/parity-util.iml" />
+      <module fileurl="file://$PROJECT_DIR$/applications/wsreporter/parity-wsreporter.iml" filepath="$PROJECT_DIR$/applications/wsreporter/parity-wsreporter.iml" />
+    </modules>
+  </component>
+</project>

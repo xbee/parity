@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding">
+    <file url="file://$PROJECT_DIR$" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/applications/client" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/applications/fix" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/applications/reporter" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/applications/system" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/applications/ticker" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/applications/wsreporter" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/libraries/book" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/libraries/file" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/libraries/fluent-logger-java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/libraries/match" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/libraries/net" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/libraries/util" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/tests/book-perf-test" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/tests/match-perf-test" charset="UTF-8" />
+  </component>
+</project>

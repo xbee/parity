@@ -110,6 +110,7 @@ class DisplayFormat extends MarketDataListener {
 
     @Override
     public void trade(OrderBook book, Side side, long price, long size) {
+        // get info of last trade
         Trade trade = trades.get(book.getInstrument());
 
         trade.price = price;

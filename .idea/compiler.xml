@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="fluent-logger" />
+        <module name="parity-book" />
+        <module name="parity-book-perf-test" />
+        <module name="parity-client" />
+        <module name="parity-file" />
+        <module name="parity-fix" />
+        <module name="parity-match" />
+        <module name="parity-match-perf-test" />
+        <module name="parity-net" />
+        <module name="parity-reporter" />
+        <module name="parity-router" />
+        <module name="parity-system" />
+        <module name="parity-ticker" />
+        <module name="parity-util" />
+        <module name="parity-wsreporter" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="fluent-logger" target="6" />
+      <module name="parity-book" target="1.8" />
+      <module name="parity-book-perf-test" target="1.8" />
+      <module name="parity-client" target="1.8" />
+      <module name="parity-file" target="1.8" />
+      <module name="parity-fix" target="1.8" />
+      <module name="parity-match" target="1.8" />
+      <module name="parity-match-perf-test" target="1.8" />
+      <module name="parity-net" target="1.8" />
+      <module name="parity-parent" target="1.8" />
+      <module name="parity-reporter" target="1.8" />
+      <module name="parity-router" target="1.8" />
+      <module name="parity-system" target="1.8" />
+      <module name="parity-ticker" target="1.8" />
+      <module name="parity-util" target="1.8" />
+      <module name="parity-wsreporter" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+</project>

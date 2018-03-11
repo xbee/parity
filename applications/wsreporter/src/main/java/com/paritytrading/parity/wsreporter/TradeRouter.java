@@ -16,7 +16,7 @@ import java.net.InetSocketAddress;
 import java.net.NetworkInterface;
 import java.util.concurrent.TimeUnit;
 
-import org.fluentd.logger.FluentLogger;
+//import org.fluentd.logger.FluentLogger;
 import org.json.simple.JSONObject;
 import ws.wamp.jawampa.WampClient;
 import ws.wamp.jawampa.WampClientBuilder;
@@ -33,7 +33,7 @@ import org.jvirtanen.config.Configs;
 
 public class TradeRouter {
 
-    private static FluentLogger LOG = FluentLogger.getLogger("app");
+//    private static FluentLogger LOG = FluentLogger.getLogger("app");
     private static final String USAGE = "parity-router [-t] <configuration-file>";
     private static WampClient client1;
     private static Disruptor<PMREvent> disruptor;
@@ -72,7 +72,7 @@ public class TradeRouter {
 
         // create json object and send it
         client1.publish("data", obj);
-        LOG.log("data", obj);
+//        LOG.log("data", obj);
 
     }
 

@@ -1,7 +1,6 @@
 package com.paritytrading.parity.wsreporter;
 
 import static org.jvirtanen.util.Applications.*;
-
 import com.paritytrading.nassau.MessageListener;
 import com.paritytrading.nassau.util.MoldUDP64;
 import com.paritytrading.nassau.util.SoupBinTCP;
@@ -15,7 +14,6 @@ import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.NetworkInterface;
 import java.util.concurrent.TimeUnit;
-
 import org.json.simple.JSONObject;
 import ws.wamp.jawampa.WampClient;
 import ws.wamp.jawampa.WampClientBuilder;
@@ -23,14 +21,12 @@ import ws.wamp.jawampa.connection.IWampConnectorProvider;
 import ws.wamp.jawampa.transport.netty.NettyWampClientConnectorProvider;
 
 import com.lmax.disruptor.dsl.Disruptor;
-
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
-
 import org.jvirtanen.config.Configs;
 
-public class TradeRouter {
+public class MarketReporter {
 
     private static final String USAGE = "parity-router [-t] <configuration-file>";
     private static WampClient wampclt;
@@ -100,7 +96,7 @@ public class TradeRouter {
         Disruptor<MarketEvent> disruptor = new Disruptor<>(MarketEvent::new, bufferSize, executor);
 
         // Connect the handler
-        disruptor.handleEventsWith(TradeRouter::handleEvent);
+        disruptor.handleEventsWith(MarketReporter::handleEvent);
 
         // Start the Disruptor, starts all threads running
         disruptor.start();

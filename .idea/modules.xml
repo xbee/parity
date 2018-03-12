@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/libraries/fluent-logger-java/fluent-logger.iml" filepath="$PROJECT_DIR$/libraries/fluent-logger-java/fluent-logger.iml" />
       <module fileurl="file://$PROJECT_DIR$/libraries/book/parity-book.iml" filepath="$PROJECT_DIR$/libraries/book/parity-book.iml" />
       <module fileurl="file://$PROJECT_DIR$/tests/book-perf-test/parity-book-perf-test.iml" filepath="$PROJECT_DIR$/tests/book-perf-test/parity-book-perf-test.iml" />
       <module fileurl="file://$PROJECT_DIR$/applications/client/parity-client.iml" filepath="$PROJECT_DIR$/applications/client/parity-client.iml" />
@@ -17,6 +16,7 @@
       <module fileurl="file://$PROJECT_DIR$/applications/ticker/parity-ticker.iml" filepath="$PROJECT_DIR$/applications/ticker/parity-ticker.iml" />
       <module fileurl="file://$PROJECT_DIR$/libraries/util/parity-util.iml" filepath="$PROJECT_DIR$/libraries/util/parity-util.iml" />
       <module fileurl="file://$PROJECT_DIR$/applications/wsreporter/parity-wsreporter.iml" filepath="$PROJECT_DIR$/applications/wsreporter/parity-wsreporter.iml" />
+      <module fileurl="file://$PROJECT_DIR$/applications/wsticker/parity-wsticker.iml" filepath="$PROJECT_DIR$/applications/wsticker/parity-wsticker.iml" />
     </modules>
   </component>
 </project>

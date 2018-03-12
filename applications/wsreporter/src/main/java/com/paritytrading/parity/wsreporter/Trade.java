@@ -17,7 +17,7 @@ class Trade {
     public long   sellOrderNumber;
 
     public String toString() {
-        return String.format("%s, %s, %d, %d, %5.8ld, %s, %s",
+        return String.format("%s, %s, %d, %d, %d, %s, %s",
                 this.timestamp,
                 this.instrument,
                 this.matchNumber,

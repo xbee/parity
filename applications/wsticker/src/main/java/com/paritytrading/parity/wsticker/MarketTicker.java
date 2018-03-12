@@ -165,7 +165,8 @@ class MarketTicker {
     public static void handleEvent(TickEvent event, long sequence, boolean endOfBatch)
     {
         JSONObject obj = event.get().toJSON();
-        wampclt.publish("data", obj);
+        obj.put("seq", sequence);
+        wampclt.publish("ticker", obj);
     }
 
 }

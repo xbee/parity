@@ -29,13 +29,20 @@ class DisplayFormat extends TradeListener {
 
     @Override
     public void trade(Trade event) {
-        Instrument instrument = instruments.get(event.instrument);
+        try {
+            Instrument instrument = instruments.get(event.instrument);
 
-        printf("%12s %-8s ", event.timestamp, event.instrument);
-        printf(instrument.getSizeFormat(), event.quantity / instrument.getSizeFactor());
-        printf(" ");
-        printf(instrument.getPriceFormat(), event.price / instrument.getPriceFactor());
-        printf(" %-8s %-8s\n", event.buyer, event.seller);
+            printf("%12s %-8s ", event.timestamp, event.instrument);
+            printf(instrument.getSizeFormat(), event.quantity / instrument.getSizeFactor());
+            printf(" ");
+            printf(instrument.getPriceFormat(), event.price / instrument.getPriceFactor());
+            printf(" %-8s %-8s\n", event.buyer, event.seller);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return;
+        }
+
     }
 
 }

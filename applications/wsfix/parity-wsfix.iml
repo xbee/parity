@@ -14,13 +14,12 @@
     <orderEntry type="library" name="Maven: it.unimi.dsi:fastutil:8.1.0" level="project" />
     <orderEntry type="library" name="Maven: com.paritytrading.foundation:foundation:0.2.1" level="project" />
     <orderEntry type="library" name="Maven: com.paritytrading.nassau:nassau-core:0.13.0" level="project" />
-    <orderEntry type="library" name="Maven: com.paritytrading.nassau:nassau-util:0.13.0" level="project" />
+    <orderEntry type="library" name="Maven: com.paritytrading.philadelphia:philadelphia-core:0.6.0" level="project" />
+    <orderEntry type="library" name="Maven: joda-time:joda-time:2.9.9" level="project" />
+    <orderEntry type="library" name="Maven: com.paritytrading.philadelphia:philadelphia-fix44:0.6.0" level="project" />
     <orderEntry type="library" name="Maven: com.typesafe:config:1.3.1" level="project" />
     <orderEntry type="library" name="Maven: org.jvirtanen.config:config-extras:0.2.0" level="project" />
     <orderEntry type="library" name="Maven: org.jvirtanen.util:util-extras:0.2.0" level="project" />
-    <orderEntry type="library" name="Maven: com.googlecode.json-simple:json-simple:1.1.1" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: junit:junit:4.12" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.hamcrest:hamcrest-core:1.3" level="project" />
     <orderEntry type="library" name="Maven: ws.wamp.jawampa:jawampa-core:0.5.0" level="project" />
     <orderEntry type="library" name="Maven: io.reactivex:rxjava:1.0.8" level="project" />
     <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-databind:2.4.4" level="project" />
@@ -36,8 +35,5 @@
     <orderEntry type="library" name="Maven: io.netty:netty-common:4.1.11.Final" level="project" />
     <orderEntry type="library" name="Maven: io.netty:netty-transport:4.1.11.Final" level="project" />
     <orderEntry type="library" name="Maven: io.netty:netty-resolver:4.1.11.Final" level="project" />
-    <orderEntry type="library" name="Maven: com.lmax:disruptor:3.3.0" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.logging.log4j:log4j-api:2.10.0" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.logging.log4j:log4j-core:2.10.0" level="project" />
   </component>
 </module>

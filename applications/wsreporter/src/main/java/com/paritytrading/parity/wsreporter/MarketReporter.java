@@ -14,6 +14,9 @@ import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.NetworkInterface;
 import java.util.concurrent.TimeUnit;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.json.simple.JSONObject;
 import ws.wamp.jawampa.WampClient;
 import ws.wamp.jawampa.WampClientBuilder;
@@ -28,37 +31,9 @@ import org.jvirtanen.config.Configs;
 
 public class MarketReporter {
 
+    private static final Logger logger = LogManager.getLogger("MarketReporter");
     private static final String USAGE = "parity-router [-t] <configuration-file>";
     private static WampClient wampclt;
-
-    private static void initWampClient(String url, String realm) {
-        try {
-            IWampConnectorProvider connectorProvider = new NettyWampClientConnectorProvider();
-            WampClientBuilder builder = new WampClientBuilder();
-
-            builder.withConnectorProvider(connectorProvider)
-                    .withUri(url)
-                    .withRealm(realm)
-                    .withInfiniteReconnects()
-                    .withReconnectInterval(3, TimeUnit.SECONDS);
-
-            // Create a client through the builder. This will not immediatly start
-            // a connection attempt
-            wampclt = builder.build();
-            wampclt.open();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            return;
-        }
-    }
-
-    // out from circlequeue
-    public static void handleEvent(MarketEvent event, long sequence, boolean endOfBatch)
-    {
-        JSONObject obj = event.get().toJSON();
-        wampclt.publish("data", obj);
-    }
 
     public static void main(String[] args) {
         if (args.length != 1 && args.length != 2)
@@ -104,7 +79,7 @@ public class MarketReporter {
 
         // initialize the event producer to submit messages
         MessageListener listener = new PMRParser(new TradeProcessor(tsv ?
-                new MarketEventProducer(disruptor) : new DisplayFormat(instruments)));
+                new MarketEventProducer(instruments, disruptor) : new DisplayFormat(instruments)));
 
         String routerUrl = config.getString("wamp-router.url");
         String routerRealm = config.getString("wamp-router.realm");
@@ -130,6 +105,39 @@ public class MarketReporter {
         }
 
         wampclt.close().toBlocking().last();
+
+    }
+
+    private static void initWampClient(String url, String realm) {
+        try {
+            IWampConnectorProvider connectorProvider = new NettyWampClientConnectorProvider();
+            WampClientBuilder builder = new WampClientBuilder();
+
+            builder.withConnectorProvider(connectorProvider)
+                    .withUri(url)
+                    .withRealm(realm)
+                    .withInfiniteReconnects()
+                    .withReconnectInterval(3, TimeUnit.SECONDS);
+
+            // Create a client through the builder. This will not immediatly start
+            // a connection attempt
+            wampclt = builder.build();
+            wampclt.open();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return;
+        }
+    }
+
+    // out from circlequeue
+    public static void handleEvent(MarketEvent event, long sequence, boolean endOfBatch)
+    {
+        JSONObject obj = event.get().toJSON();
+        obj.put("seq", sequence);
+        wampclt.publish("data", obj);
+
+//        logger.debug(obj.toJSONString());
 
     }
 

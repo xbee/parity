@@ -6,7 +6,6 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="fluent-logger" />
         <module name="parity-book" />
         <module name="parity-book-perf-test" />
         <module name="parity-client" />
@@ -20,6 +19,7 @@
         <module name="parity-ticker" />
         <module name="parity-util" />
         <module name="parity-wsreporter" />
+        <module name="parity-wsticker" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
@@ -37,7 +37,9 @@
       <module name="parity-system" target="1.8" />
       <module name="parity-ticker" target="1.8" />
       <module name="parity-util" target="1.8" />
+      <module name="parity-wsfix" target="1.8" />
       <module name="parity-wsreporter" target="1.8" />
+      <module name="parity-wsticker" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>

@@ -53,6 +53,7 @@ public class MarketReporter {
         }
     }
 
+    // out from circlequeue
     public static void handleEvent(MarketEvent event, long sequence, boolean endOfBatch)
     {
         JSONObject obj = event.get().toJSON();

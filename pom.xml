@@ -47,13 +47,13 @@
     <module>libraries/match</module>
     <module>libraries/net</module>
     <module>libraries/util</module>
-    <module>libraries/fluent-logger-java</module>
     <module>applications/client</module>
     <module>applications/fix</module>
     <module>applications/reporter</module>
     <module>applications/system</module>
     <module>applications/ticker</module>
     <module>applications/wsreporter</module>
+    <module>applications/wsticker</module>
     <module>tests/book-perf-test</module>
     <module>tests/match-perf-test</module>
   </modules>

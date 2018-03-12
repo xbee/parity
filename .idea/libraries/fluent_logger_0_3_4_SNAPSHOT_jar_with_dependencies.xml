@@ -1,9 +1,0 @@
-<component name="libraryTable">
-  <library name="fluent-logger-0.3.4-SNAPSHOT-jar-with-dependencies">
-    <CLASSES>
-      <root url="jar://$PROJECT_DIR$/libraries/fluent-logger-java/target/fluent-logger-0.3.4-SNAPSHOT-jar-with-dependencies.jar!/" />
-    </CLASSES>
-    <JAVADOC />
-    <SOURCES />
-  </library>
-</component>

@@ -10,6 +10,7 @@
       <module fileurl="file://$PROJECT_DIR$/libraries/match/parity-match.iml" filepath="$PROJECT_DIR$/libraries/match/parity-match.iml" />
       <module fileurl="file://$PROJECT_DIR$/tests/match-perf-test/parity-match-perf-test.iml" filepath="$PROJECT_DIR$/tests/match-perf-test/parity-match-perf-test.iml" />
       <module fileurl="file://$PROJECT_DIR$/libraries/net/parity-net.iml" filepath="$PROJECT_DIR$/libraries/net/parity-net.iml" />
+      <module fileurl="file://$PROJECT_DIR$/applications/obm/parity-obm.iml" filepath="$PROJECT_DIR$/applications/obm/parity-obm.iml" />
       <module fileurl="file://$PROJECT_DIR$/parity-parent.iml" filepath="$PROJECT_DIR$/parity-parent.iml" />
       <module fileurl="file://$PROJECT_DIR$/applications/reporter/parity-reporter.iml" filepath="$PROJECT_DIR$/applications/reporter/parity-reporter.iml" />
       <module fileurl="file://$PROJECT_DIR$/applications/system/parity-system.iml" filepath="$PROJECT_DIR$/applications/system/parity-system.iml" />

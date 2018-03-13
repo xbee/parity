@@ -166,7 +166,9 @@ class MarketTicker {
     {
         JSONObject obj = event.get().toJSON();
         obj.put("seq", sequence);
-        wampclt.publish("ticker", obj);
+        String topic = String.format("ticker.%s", event.get().instrument);
+        wampclt.publish(topic, obj);
+//        wampclt.publish("ticker", obj);
     }
 
 }

@@ -52,7 +52,7 @@
     <module>applications/reporter</module>
     <module>applications/system</module>
     <module>applications/ticker</module>
-    <!--<module>applications/wsfix</module>-->
+    <module>applications/obm</module>
     <module>applications/wsreporter</module>
     <module>applications/wsticker</module>
     <module>tests/book-perf-test</module>

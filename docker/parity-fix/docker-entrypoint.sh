@@ -2,6 +2,8 @@
 
 set -e
 
+mkdir -p /opt/parity
+
 cat > /opt/parity/parity-fix.conf <<-EOF
 fix {
   address        = 0.0.0.0
@@ -15,4 +17,7 @@ order-entry {
 }
 EOF
 
+exec cp /parity/parity-fix.jar /opt/parity/parity-fix.jar
+#exec cp /parity/parity-fix.conf /opt/parity/parity-fix.conf
+exec chmod 644 /opt/parity/parity-fix.jar
 exec /usr/bin/java -jar /opt/parity/parity-fix.jar /opt/parity/parity-fix.conf

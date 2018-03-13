@@ -1,48 +1,52 @@
-version: '2'
+version: '3'
 services:
-#  parity-system:
-#    build: 'parity-system'
-#    ports:
-#      - '4000:4000'
-#  parity-fix:
-#    build: 'parity-fix'
-#    ports:
-#      - '4010:4010'
+  parity-system:
+    build: './docker/parity-system'
+    ports:
+      - '4000:4000'
+    volumes:
+      - "./data/opt/parity:/parity"
+  parity-fix:
+    build: './docker/parity-fix'
+    ports:
+      - '4010:4010'
+    volumes:
+      - "./data/opt/parity:/parity"
 #  market-data-gateway:
-#    build: 'nassau-soupbintcp-gateway'
+#    build: './docker/nassau-soupbintcp-gateway'
 #    ports:
 #      - '5000:5000'
 #    environment:
 #      NASSAU_SOUPBINTCP_GATEWAY_UPSTREAM_MULTICAST_PORT: '5000'
 #      NASSAU_SOUPBINTCP_GATEWAY_UPSTREAM_REQUEST_PORT: '5001'
 #  market-reporting-gateway:
-#    build: 'nassau-soupbintcp-gateway'
+#    build: './docker/nassau-soupbintcp-gateway'
 #    ports:
 #      - '6000:5000'
 #    environment:
 #      NASSAU_SOUPBINTCP_GATEWAY_UPSTREAM_MULTICAST_PORT: '6000'
 #      NASSAU_SOUPBINTCP_GATEWAY_UPSTREAM_REQUEST_PORT: '6001'
-  api:
-    container_name: ${APP_NAME}_${API_HOST}
-    build: './docker/api'
-    restart: always
-    ports:
-      - '8082:8080'
-    volumes:
-      - './api:/go/src/app'
-    depends_on:
-      - 'mongo'
-  web:
-    image: 'nginx:alphine'
-    container_name: ${APP_NAME}_${WEB_HOST}
-    build: './docker/web'
-    ports:
-      - '8081:80'
-    volumes:
-      - './docker/web:/usr/share/nginx/html'
-      - "./etc/nginx/default.conf:/etc/nginx/conf.d/default.conf"
-    depends_on:
-      - 'api'
+#  api:
+#    container_name: ${APP_NAME}_${API_HOST}
+#    build: './docker/api'
+#    restart: always
+#    ports:
+#      - '8082:8080'
+#    volumes:
+#      - './api:/go/src/app'
+#    depends_on:
+#      - 'mongo'
+#  web:
+#    image: 'nginx:alphine'
+#    container_name: ${APP_NAME}_${WEB_HOST}
+#    build: './docker/web'
+#    ports:
+#      - '8081:80'
+#    volumes:
+#      - './docker/web:/usr/share/nginx/html'
+#      - "./etc/nginx/default.conf:/etc/nginx/conf.d/default.conf"
+#    depends_on:
+#      - 'api'
   mongo:
     image: 'mongo:latest'
     container_name: ${APP_NAME}_${MONGO_HOST}
@@ -51,24 +55,25 @@ services:
       - '27100:27017'
     volumes:
       - "./data/db/mongo:/data/db"
-  mysqldb:
-    image: mysql
-    container_name: ${APP_NAME}_${MYSQL_HOST}
-    restart: always
-    env_file:
-      - ".env"
-    environment:
-      - MYSQL_DATABASE=${MYSQL_DATABASE}
-      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
-      - MYSQL_USER=${MYSQL_USER}
-      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
-    ports:
-      - "8989:3306"
-    volumes:
-      - "./data/db/mysql:/var/lib/mysql"
+#  mysqldb:
+#    image: mysql
+#    container_name: ${APP_NAME}_${MYSQL_HOST}
+#    restart: always
+#    env_file:
+#      - ".env"
+#    environment:
+#      - MYSQL_DATABASE=${MYSQL_DATABASE}
+#      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+#      - MYSQL_USER=${MYSQL_USER}
+#      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+#    ports:
+#      - "8989:3306"
+#    volumes:
+#      - "./data/db/mysql:/var/lib/mysql"
   crossbar:
     image: 'crossbario/crossbar'
     container_name: ${APP_NAME}_${CROSSBAR_HOST}
     restart: always
     ports:
-      - '9080:8080'
+      - '7000:8080'
+

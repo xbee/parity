@@ -15,8 +15,8 @@ import java.net.InetSocketAddress;
 import java.net.NetworkInterface;
 import java.util.concurrent.TimeUnit;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+//import org.apache.logging.log4j.LogManager;
+//import org.apache.logging.log4j.Logger;
 import org.json.simple.JSONObject;
 import ws.wamp.jawampa.WampClient;
 import ws.wamp.jawampa.WampClientBuilder;
@@ -31,7 +31,7 @@ import org.jvirtanen.config.Configs;
 
 public class MarketReporter {
 
-    private static final Logger logger = LogManager.getLogger("MarketReporter");
+//    private static final Logger logger = LogManager.getLogger("MarketReporter");
     private static final String USAGE = "parity-router [-t] <configuration-file>";
     private static WampClient wampclt;
 

@@ -4,14 +4,14 @@ import com.lmax.disruptor.EventTranslatorOneArg;
 import com.lmax.disruptor.dsl.Disruptor;
 import com.paritytrading.parity.util.Instrument;
 import com.paritytrading.parity.util.Instruments;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+//import org.apache.logging.log4j.LogManager;
+//import org.apache.logging.log4j.Logger;
 //import com.savoirtech.logging.slf4j.json.LoggerFactory;
 
 public class MarketEventProducer extends TradeListener {
     private final Disruptor<MarketEvent> disruptor;
     private Instruments instruments;
-    private static final Logger logger = LogManager.getLogger("MarketEventProducer");
+//    private static final Logger logger = LogManager.getLogger("MarketEventProducer");
 
     public MarketEventProducer(Instruments instruments, Disruptor<MarketEvent> disruptor) {
         this.instruments = instruments;

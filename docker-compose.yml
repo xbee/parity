@@ -10,6 +10,8 @@ services:
     expose:
       - "4000/tcp"
       - "5001/udp"
+      - "5000/udp"
+      - "6000/udp"
       - "6001/udp"
     entrypoint:
       - /usr/bin/java
@@ -30,6 +32,27 @@ services:
       - -jar
       - /opt/parity/parity-fix.jar
       - /opt/parity/parity-fix.conf
+    depends_on:
+      - parity-system
+  parity-wsreporter:
+    image: 'openjdk:8-jre-alpine'
+    volumes:
+      - "./data/opt/parity:/opt/parity"
+    entrypoint:
+      - /usr/bin/java
+      - -jar
+      - /opt/parity/parity-wsreporter.jar
+      - -t
+      - /opt/parity/parity-reporter.conf
+    depends_on:
+      - parity-system
+      - crossbar
+  parity-client:
+    image: 'openjdk:8-jre-alpine'
+    volumes:
+      - "./data/opt/parity:/opt/parity"
+    depends_on:
+      - parity-system
 #  market-data-gateway:
 #    build: './docker/nassau-soupbintcp-gateway'
 #    ports:

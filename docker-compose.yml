@@ -117,4 +117,6 @@ services:
     restart: always
     ports:
       - '7000:8080'
+    expose:
+      - '8080'
 

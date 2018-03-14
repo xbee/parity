@@ -18,6 +18,10 @@ import java.util.concurrent.TimeUnit;
 //import org.apache.logging.log4j.LogManager;
 //import org.apache.logging.log4j.Logger;
 import org.json.simple.JSONObject;
+import rx.functions.Action0;
+import rx.functions.Action1;
+import ws.wamp.jawampa.ApplicationError;
+import ws.wamp.jawampa.Request;
 import ws.wamp.jawampa.WampClient;
 import ws.wamp.jawampa.WampClientBuilder;
 import ws.wamp.jawampa.connection.IWampConnectorProvider;
@@ -122,12 +126,30 @@ public class MarketReporter {
             // Create a client through the builder. This will not immediatly start
             // a connection attempt
             wampclt = builder.build();
-            wampclt.open();
 
         } catch (Exception e) {
             e.printStackTrace();
             return;
         }
+
+        wampclt.statusChanged().subscribe(new Action1<WampClient.State>() {
+            @Override
+            public void call(WampClient.State t1) {
+                System.out.println("WSReporter to Router connection status changed to " + t1);
+            }
+        }, new Action1<Throwable>() {
+            @Override
+            public void call(Throwable t) {
+                System.out.println("WSReporter to Router connection ended with error " + t);
+            }
+        }, new Action0() {
+            @Override
+            public void call() {
+                System.out.println("WSReporter to Router connection ended normally");
+            }
+        });
+
+        wampclt.open();
     }
 
     // out from circlequeue

@@ -4,6 +4,7 @@ services:
 #    build: './docker/parity-system'
     image: 'openjdk:8-jre-alpine'
     container_name: ${APP_NAME}_${ENGINE_HOST}
+    # TODO: need to remove in production
     ports:
       - '4000:4000'
     volumes:
@@ -50,12 +51,12 @@ services:
     depends_on:
       - engine
       - crossbar
-  client:
-    image: 'openjdk:8-jre-alpine'
-    volumes:
-      - "./data/opt/parity:/opt/parity"
-    depends_on:
-      - engine
+#  client:
+#    image: 'openjdk:8-jre-alpine'
+#    volumes:
+#      - "./data/opt/parity:/opt/parity"
+#    depends_on:
+#      - engine
 #  market-data-gateway:
 #    build: './docker/nassau-soupbintcp-gateway'
 #    ports:
@@ -80,29 +81,28 @@ services:
 #      - './api:/go/src/app'
 #    depends_on:
 #      - 'mongo'
-#  web:
-#    image: 'nginx:alphine'
-#    container_name: ${APP_NAME}_${WEB_HOST}
-#    build: './docker/web'
-#    ports:
-#      - '8081:80'
-#    volumes:
-#      - './docker/web:/usr/share/nginx/html'
-#      - "./etc/nginx/default.conf:/etc/nginx/conf.d/default.conf"
-#    depends_on:
-#      - 'api'
-  mongo:
-    image: 'mongo:latest'
-    container_name: ${APP_NAME}_${MONGO_HOST}
-    restart: always
-    # just need in developing
-    # in production it should be remove
+  proxy:
+    image: 'jwilder/nginx-proxy'
+    container_name: ${APP_NAME}_${PROXY_HOST}
     ports:
-      - '27100:27017'
+      - '8081:80'
     volumes:
-      - "./data/db/mongo:/data/db"
-    expose:
-      - '27017'
+      - './docker/web:/usr/share/nginx/html'
+      - "./etc/nginx/nginx.conf:/etc/nginx/conf.d/my_proxy.conf"
+      - "./data/var/log:/var/log/"
+      - "/var/run/docker.sock:/tmp/docker.sock:ro"
+#  mongo:
+#    image: 'mongo:latest'
+#    container_name: ${APP_NAME}_${MONGO_HOST}
+#    restart: always
+#    # just need in developing
+#    # in production it should be remove
+#    ports:
+#      - '27100:27017'
+#    volumes:
+#      - "./data/db/mongo:/data/db"
+#    expose:
+#      - '27017'
 #  mysqldb:
 #    image: mysql
 #    container_name: ${APP_NAME}_${MYSQL_HOST}
@@ -122,16 +122,13 @@ services:
     image: 'crossbario/crossbar'
     container_name: ${APP_NAME}_${CROSSBAR_HOST}
     restart: always
-    ports:
-      - '7000:8080'
     expose:
       - '8080'
-  replicator:
-#    image: "node:alpine"
-    build: "./docker/replicator"
-    container_name: ${APP_NAME}_${REPLICATOR_HOST}
-    depends_on:
-      - engine
+#  replicator:
+#    build: "./docker/replicator"
+#    container_name: ${APP_NAME}_${REPLICATOR_HOST}
+#    depends_on:
+#      - engine
 #    entrypoint:
 #      - /bin/sh
 

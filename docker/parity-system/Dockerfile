@@ -2,9 +2,11 @@ FROM openjdk:8-jre-alpine
 
 ENV PARITY_VERSION "0.5.0"
 
-RUN mkdir -p /opt/parity/
+
 #ADD https://repo1.maven.org/maven2/com/paritytrading/parity/parity-system/$PARITY_VERSION/parity-system-$PARITY_VERSION.jar /opt/parity/parity-system.jar
-#RUN cp /parity/parity-system.jar /opt/parity/parity-system.jar
+#ADD /parity/parity-system.jar /opt/parity/parity-system.jar
+#ADD ./parity-system.jar /opt/parity/parity-system.jar
+#ADD ./parity-system.conf /opt/parity/parity-system.conf
 
 #RUN chmod 644 /opt/parity/parity-system.jar
 

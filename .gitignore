@@ -1,2 +1,3 @@
 *.jar
 target/
+data/db/mongo

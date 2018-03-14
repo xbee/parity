@@ -1,17 +1,35 @@
 version: '3'
 services:
   parity-system:
-    build: './docker/parity-system'
+#    build: './docker/parity-system'
+    image: 'openjdk:8-jre-alpine'
     ports:
       - '4000:4000'
     volumes:
-      - "./data/opt/parity:/parity"
+      - "./data/opt/parity:/opt/parity"
+    expose:
+      - "4000/tcp"
+      - "5001/udp"
+      - "6001/udp"
+    entrypoint:
+      - /usr/bin/java
+      - -jar
+      - /opt/parity/parity-system.jar
+      - /opt/parity/parity-system.conf
   parity-fix:
-    build: './docker/parity-fix'
+#    build: './docker/parity-fix'
+    image: 'openjdk:8-jre-alpine'
     ports:
       - '4010:4010'
+    expose:
+      - "4010"
     volumes:
-      - "./data/opt/parity:/parity"
+      - "./data/opt/parity:/opt/parity"
+    entrypoint:
+      - /usr/bin/java
+      - -jar
+      - /opt/parity/parity-fix.jar
+      - /opt/parity/parity-fix.conf
 #  market-data-gateway:
 #    build: './docker/nassau-soupbintcp-gateway'
 #    ports:

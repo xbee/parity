@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/sh
 # The GDAX product to replicate.
 if [ -z $GDAX_PRODUCT_ID ]; then
   export GDAX_PRODUCT_ID="BTC-USD"
@@ -18,7 +18,7 @@ if [ -z $PARITY_SIZE_FACTOR ]; then
 fi
 
 # The IP address and TCP port of the market data gateway.
-export PARITY_MARKET_DATA_ADDRESS="127.0.0.1"
+export PARITY_MARKET_DATA_ADDRESS="engine"
 export PARITY_MARKET_DATA_PORT="5000"
 
 # The username and password of the market data gateway.
@@ -26,7 +26,7 @@ export PARITY_MARKET_DATA_USERNAME=""
 export PARITY_MARKET_DATA_PASSWORD=""
 
 # The IP address and TCP port for order entry at Parity Trading System.
-export PARITY_ORDER_ENTRY_ADDRESS="127.0.0.1"
+export PARITY_ORDER_ENTRY_ADDRESS="engine"
 export PARITY_ORDER_ENTRY_PORT="4000"
 
 # The username and password for order entry at Parity Trading System.

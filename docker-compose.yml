@@ -1,8 +1,9 @@
 version: '3'
 services:
-  parity-system:
+  engine:
 #    build: './docker/parity-system'
     image: 'openjdk:8-jre-alpine'
+    container_name: ${APP_NAME}_${ENGINE_HOST}
     ports:
       - '4000:4000'
     volumes:
@@ -18,9 +19,10 @@ services:
       - -jar
       - /opt/parity/parity-system.jar
       - /opt/parity/parity-system.conf
-  parity-fix:
+  fix:
 #    build: './docker/parity-fix'
     image: 'openjdk:8-jre-alpine'
+    container_name: ${APP_NAME}_${FIX_HOST}
     ports:
       - '4010:4010'
     expose:
@@ -33,9 +35,10 @@ services:
       - /opt/parity/parity-fix.jar
       - /opt/parity/parity-fix.conf
     depends_on:
-      - parity-system
-  parity-wsreporter:
+      - engine
+  wsreporter:
     image: 'openjdk:8-jre-alpine'
+    container_name: ${APP_NAME}_${REPORTER_HOST}
     volumes:
       - "./data/opt/parity:/opt/parity"
     entrypoint:
@@ -45,14 +48,14 @@ services:
       - -t
       - /opt/parity/parity-reporter.conf
     depends_on:
-      - parity-system
+      - engine
       - crossbar
-  parity-client:
+  client:
     image: 'openjdk:8-jre-alpine'
     volumes:
       - "./data/opt/parity:/opt/parity"
     depends_on:
-      - parity-system
+      - engine
 #  market-data-gateway:
 #    build: './docker/nassau-soupbintcp-gateway'
 #    ports:
@@ -92,10 +95,14 @@ services:
     image: 'mongo:latest'
     container_name: ${APP_NAME}_${MONGO_HOST}
     restart: always
+    # just need in developing
+    # in production it should be remove
     ports:
       - '27100:27017'
     volumes:
       - "./data/db/mongo:/data/db"
+    expose:
+      - '27017'
 #  mysqldb:
 #    image: mysql
 #    container_name: ${APP_NAME}_${MYSQL_HOST}
@@ -119,4 +126,12 @@ services:
       - '7000:8080'
     expose:
       - '8080'
+  replicator:
+#    image: "node:alpine"
+    build: "./docker/replicator"
+    container_name: ${APP_NAME}_${REPLICATOR_HOST}
+    depends_on:
+      - engine
+#    entrypoint:
+#      - /bin/sh
 

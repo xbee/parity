@@ -134,23 +134,26 @@ services:
     image: 'crossbario/crossbar'
     container_name: ${APP_NAME}_${CROSSBAR_HOST}
     restart: always
+    ports:
+      - "7000:8080"
     expose:
       - '8080'
-    volumes:
+#    volumes:
       - "./data/opt/crossbar:/node"
-      - "./data/var/log/crossbar:/var/log/crossbar"
-    entrypoint:
-      - crossbar
-      - start
-      - --cbdir
-      - /node/.crossbar
-      - --logdir
-      - /var/log/crossbar
+#      - "./data/var/log/crossbar:/var/log/crossbar"
+#    entrypoint:
+#      - crossbar
+#      - start
+#      - --cbdir
+#      - /node/.crossbar
+#      - --logdir
+#      - /var/log/crossbar
   replicator:
     build: "./docker/replicator"
     container_name: ${APP_NAME}_${REPLICATOR_HOST}
     depends_on:
       - engine
+      - wsreporter
 #    entrypoint:
 #      - /bin/sh
 

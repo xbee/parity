@@ -1,0 +1,11 @@
+- name: replace source.list
+  command: sed  -i  's/archive.ubuntu.com/mirrors.aliyun.com/g'  /etc/apt/sources.list
+  become: yes
+- name: install python
+  apt:
+    name: python-minimal
+    state: present
+- name: install unzip
+  package:
+    name: unzip
+    state: present

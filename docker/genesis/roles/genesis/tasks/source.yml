@@ -1,0 +1,60 @@
+- shell: mkdir -p /opt/replicator
+- shell: mkdir bin
+  args:
+    chdir: /opt/replicator
+- shell: mkdir etc
+  args:
+    chdir: /opt/replicator
+- shell: mkdir lib
+  args:
+    chdir: /opt/replicator
+- name: Ensure . exists
+  file:
+    path: .
+    state: directory
+- synchronize:
+    src: applications/replicator/bin
+    dest: ./bin
+    recursive: yes
+- name: Ensure . exists
+  file:
+    path: .
+    state: directory
+- synchronize:
+    src: applications/replicator/etc
+    dest: ./etc
+    recursive: yes
+- name: Ensure . exists
+  file:
+    path: .
+    state: directory
+- synchronize:
+    src: applications/replicator/lib
+    dest: ./lib
+    recursive: yes
+- name: Ensure  exists
+  file:
+    path: ''
+    state: directory
+- copy:
+    src: applications/replicator/package.json
+    dest: .
+- name: Ensure / exists
+  file:
+    path: /
+    state: directory
+- copy:
+    src: entrypoint.sh
+    dest: /
+- shell: npm install
+  args:
+    chdir: /opt/replicator
+- shell: chmod 0755 ./bin/genesis-replicator
+  args:
+    chdir: /opt/replicator
+- shell: chmod 0755 ./etc/example.sh
+  args:
+    chdir: /opt/replicator
+- shell: chmod 0755 /entrypoint.sh
+  args:
+    chdir: /opt/replicator

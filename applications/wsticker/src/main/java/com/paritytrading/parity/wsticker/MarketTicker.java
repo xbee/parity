@@ -26,6 +26,8 @@ import java.util.concurrent.TimeUnit;
 
 import org.json.simple.JSONObject;
 import org.jvirtanen.config.Configs;
+import rx.functions.Action0;
+import rx.functions.Action1;
 import ws.wamp.jawampa.WampClient;
 import ws.wamp.jawampa.WampClientBuilder;
 import ws.wamp.jawampa.connection.IWampConnectorProvider;
@@ -154,6 +156,24 @@ class MarketTicker {
             // Create a client through the builder. This will not immediatly start
             // a connection attempt
             wampclt = builder.build();
+
+            wampclt.statusChanged().subscribe(new Action1<WampClient.State>() {
+                @Override
+                public void call(WampClient.State t1) {
+                    System.out.println("WSTicker connection status changed to " + t1);
+                }
+            }, new Action1<Throwable>() {
+                @Override
+                public void call(Throwable t) {
+                    System.out.println("WSTicker connection ended with error " + t);
+                }
+            }, new Action0() {
+                @Override
+                public void call() {
+                    System.out.println("WSTicker connection ended normally");
+                }
+            });
+
             wampclt.open();
 
         } catch (Exception e) {
@@ -168,7 +188,6 @@ class MarketTicker {
         obj.put("seq", sequence);
         String topic = String.format("ticker.%s", event.get().instrument);
         wampclt.publish(topic, obj);
-//        wampclt.publish("ticker", obj);
     }
 
 }

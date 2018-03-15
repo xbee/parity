@@ -134,8 +134,6 @@ services:
     image: 'crossbario/crossbar'
     container_name: ${APP_NAME}_${CROSSBAR_HOST}
     restart: always
-    ports:
-      - "7000:8080"
     expose:
       - '8080'
     volumes:
@@ -153,7 +151,6 @@ services:
     container_name: ${APP_NAME}_${REPLICATOR_HOST}
     depends_on:
       - engine
-      - wsreporter
 #    entrypoint:
 #      - /bin/sh
 

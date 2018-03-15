@@ -34,7 +34,7 @@ const book = new OrderBook();
 const orderIds = new Map();
 
 const orderEntry = login({
-  address: PARITY_ORDER_ENTRY_ADDRESS,
+  host: PARITY_ORDER_ENTRY_ADDRESS,
   port: PARITY_ORDER_ENTRY_PORT,
   username: PARITY_ORDER_ENTRY_USERNAME,
   password: PARITY_ORDER_ENTRY_PASSWORD,
@@ -49,42 +49,6 @@ orderEntry.on('message', (payload) => {
   }
 });
 
-const marketData = login({
-  address: PARITY_MARKET_DATA_ADDRESS,
-  port: PARITY_MARKET_DATA_PORT,
-  username: PARITY_MARKET_DATA_USERNAME,
-  password: PARITY_MARKET_DATA_PASSWORD,
-});
-
-marketData.on('message', (payload) => {
-  const message = PMD.parse(payload);
-
-  switch (message.messageType) {
-  case 'A':
-    if (message.instrument !== PARITY_INSTRUMENT)
-      return;
-
-    const orderNumber = message.orderNumber;
-
-    book.add(orderNumber, message.side, message.price, message.quantity);
-
-    const orderId = orderIds.get(orderNumber);
-    if (orderId) {
-      book.associate(orderNumber, orderId);
-      orderIds.delete(orderNumber);
-    }
-
-    break;
-  case 'E':
-    book.reduce(message.orderNumber, message.quantity);
-    break;
-  case 'X':
-    book.reduce(message.orderNumber, message.canceledQuantity);
-    break;
-  default:
-    break;
-  }
-});
 
 const translator = new MessageTranslator(book, PARITY_INSTRUMENT, PARITY_PRICE_FACTOR, PARITY_SIZE_FACTOR);
 

@@ -20,23 +20,22 @@ services:
       - -jar
       - /opt/parity/parity-system.jar
       - /opt/parity/parity-system.conf
-  fix:
-#    build: './docker/parity-fix'
-    image: 'openjdk:8-jre-alpine'
-    container_name: ${APP_NAME}_${FIX_HOST}
-    ports:
-      - '4010:4010'
-    expose:
-      - "4010"
-    volumes:
-      - "./data/opt/parity:/opt/parity"
-    entrypoint:
-      - /usr/bin/java
-      - -jar
-      - /opt/parity/parity-fix.jar
-      - /opt/parity/parity-fix.conf
-    depends_on:
-      - engine
+#  fix:
+#    image: 'openjdk:8-jre-alpine'
+#    container_name: ${APP_NAME}_${FIX_HOST}
+#    ports:
+#      - '4010:4010'
+#    expose:
+#      - "4010"
+#    volumes:
+#      - "./data/opt/parity:/opt/parity"
+#    entrypoint:
+#      - /usr/bin/java
+#      - -jar
+#      - /opt/parity/parity-fix.jar
+#      - /opt/parity/parity-fix.conf
+#    depends_on:
+#      - engine
   wsreporter:
     image: 'openjdk:8-jre-alpine'
     container_name: ${APP_NAME}_${REPORTER_HOST}
@@ -51,6 +50,19 @@ services:
     depends_on:
       - engine
       - crossbar
+  ticker:
+      image: 'openjdk:8-jre-alpine'
+      container_name: ${APP_NAME}_${TICKER_HOST}
+      volumes:
+        - "./data/opt/parity:/opt/parity"
+      entrypoint:
+        - /usr/bin/java
+        - -jar
+        - /opt/parity/parity-wsticker.jar
+        - /opt/parity/parity-ticker.conf
+      depends_on:
+        - engine
+        - crossbar
 #  client:
 #    image: 'openjdk:8-jre-alpine'
 #    volumes:
@@ -124,11 +136,21 @@ services:
     restart: always
     expose:
       - '8080'
-#  replicator:
-#    build: "./docker/replicator"
-#    container_name: ${APP_NAME}_${REPLICATOR_HOST}
-#    depends_on:
-#      - engine
+    volumes:
+      - "./data/opt/crossbar:/node"
+      - "./data/var/log/crossbar:/var/log/crossbar"
+    entrypoint:
+      - crossbar
+      - start
+      - --cbdir
+      - /node/.crossbar
+      - --logdir
+      - /var/log/crossbar
+  replicator:
+    build: "./docker/replicator"
+    container_name: ${APP_NAME}_${REPLICATOR_HOST}
+    depends_on:
+      - engine
 #    entrypoint:
 #      - /bin/sh
 

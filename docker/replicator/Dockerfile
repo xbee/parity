@@ -6,10 +6,10 @@ RUN mkdir bin
 RUN mkdir etc
 RUN mkdir lib
 
-COPY ./bin ./bin
-COPY ./etc ./etc
-COPY ./lib ./lib
-COPY ./package.json .
+COPY ./applications/replicator/bin ./bin
+COPY ./applications/replicator/etc ./etc
+COPY ./applications/replicator/lib ./lib
+COPY ./applications/replicator/package.json .
 
 COPY ./entrypoint.sh /
 

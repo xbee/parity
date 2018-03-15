@@ -18,7 +18,7 @@ if [ -z $PARITY_SIZE_FACTOR ]; then
 fi
 
 # The IP address and TCP port of the market data gateway.
-export PARITY_MARKET_DATA_ADDRESS="engine"
+export PARITY_MARKET_DATA_ADDRESS="ticker"
 export PARITY_MARKET_DATA_PORT="5000"
 
 # The username and password of the market data gateway.

@@ -1,0 +1,24 @@
+---
+#- name: replace apt source.list
+#  replace:
+#    path: /etc/apt/sources.list
+#    regexp: 'archive.ubuntu.com'
+#    replace: 'mirrors.aliyun.com'
+#    backup: yes
+# tasks file for flask
+- name: Install dumb init
+  get_url:
+    dest: /usr/bin/dumb-init
+    url: https://github.com/Yelp/dumb-init/releases/download/v1.2.0/dumb-init_1.2.0_amd64
+    mode: 0775
+    validate_certs: no
+- name: Install epel
+  yum:
+    name: epel-release
+    state: present
+    disable_gpg_check: yes
+- name: install unzip
+  package:
+    name: unzip
+    state: present
+  become: yes

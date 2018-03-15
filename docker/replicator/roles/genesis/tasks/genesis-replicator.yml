@@ -1,0 +1,36 @@
+---
+- name: create directory
+  file:
+    name: "/opt/genesis-replicator"
+    state: "directory"
+  become: yes
+- name: copy files
+  copy:
+    src: "./applications/replicator/{{ item }}"
+    dest: "/opt/genesis-replicator"
+  with_items:
+    - "bin"
+    - "lib"
+    - "package.json"
+  become: yes
+- name: install dependencies
+  npm:
+    path: "/opt/genesis-replicator"
+  become: yes
+- name: create unit files
+  template:
+    src="genesis-replicator.service.j2"
+    dest="/etc/systemd/system/{{ dest }}"
+  vars:
+    dest: "genesis-replicator-{{ item['id'] | lower }}.service"
+    product: "{{ item }}"
+  with_items: "{{ products }}"
+  become: yes
+  notify: reload systemd
+- name: enable services
+  service:
+    name: "genesis-replicator-{{ item['id'] | lower }}"
+    enabled: yes
+    state: started
+  with_items: "{{ products }}"
+  become: yes

@@ -1,0 +1,72 @@
+---
+nassau_url: "https://github.com/paritytrading/nassau"
+nassau_version: "0.13.0"
+nassau_archive: "nassau-{{ nassau_version }}.zip"
+nassau_archive_url: "{{ nassau_url }}/releases/download/{{ nassau_version }}/{{ nassau_archive }}"
+nassau_archive_dir: "nassau-{{ nassau_version }}"
+
+parity_url: "https://github.com/paritytrading/parity"
+parity_version: "0.7.0"
+parity_archive: "parity-{{ parity_version }}.zip"
+parity_archive_url: "{{ parity_url }}/releases/download/{{ parity_version }}/{{ parity_archive }}"
+parity_archive_dir: "parity-{{ parity_version }}"
+
+host_address: "eth0"
+guest_address: "127.0.0.1"
+
+poe_port: 4000
+
+pmd_multicast_interface: "{{ guest_address }}"
+pmd_multicast_group: "224.0.0.1"
+pmd_multicast_port: 5000
+pmd_request_port: 5001
+
+pmd_port: 5000
+
+pmr_multicast_interface: "{{ guest_address }}"
+pmr_multicast_group: "224.0.0.1"
+pmr_multicast_port: 6000
+pmr_request_port: 6001
+
+fix_port: 4010
+
+price_integer_digits: 4
+size_integer_digits: 4
+
+products:
+  - id: BTC-USD
+    price_fraction_digits: 2
+    size_fraction_digits: 8
+  - id: BTC-EUR
+    price_fraction_digits: 2
+    size_fraction_digits: 8
+  - id: BTC-GBP
+    price_fraction_digits: 2
+    size_fraction_digits: 8
+  - id: BCH-USD
+    price_fraction_digits: 2
+    size_fraction_digits: 8
+  - id: BCH-BTC
+    price_fraction_digits: 5
+    size_fraction_digits: 8
+  - id: BCH-EUR
+    price_fraction_digits: 2
+    size_fraction_digits: 8
+  - id: ETH-USD
+    price_fraction_digits: 2
+    size_fraction_digits: 8
+  - id: ETH-BTC
+    price_fraction_digits: 5
+    size_fraction_digits: 8
+  - id: ETH-EUR
+    price_fraction_digits: 2
+    size_fraction_digits: 8
+  - id: LTC-USD
+    price_fraction_digits: 2
+    size_fraction_digits: 8
+  - id: LTC-BTC
+    price_fraction_digits: 5
+    size_fraction_digits: 8
+  - id: LTC-EUR
+    price_fraction_digits: 2
+    size_fraction_digits: 8

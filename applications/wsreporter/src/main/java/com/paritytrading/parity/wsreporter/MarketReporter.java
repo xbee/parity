@@ -157,9 +157,8 @@ public class MarketReporter {
     {
         JSONObject obj = event.get().toJSON();
         obj.put("seq", sequence);
-        wampclt.publish("data", obj);
-
-//        logger.debug(obj.toJSONString());
+        String topic = String.format("data.%s", event.get().instrument);
+        wampclt.publish(topic, obj);
 
     }
 

@@ -38,7 +38,7 @@ public class MarketEventProducer extends TradeListener {
 //        logger.debug(event.toJSON());
         Instrument instrument = instruments.get(event.instrument);
 
-        printf(event.toJSON() + "\n");
+//        printf(event.toJSON() + "\n");
 
 //        try {
 //            if (instrument != null) {

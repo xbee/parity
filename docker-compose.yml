@@ -138,7 +138,7 @@ services:
       - "7000:8080"
     expose:
       - '8080'
-#    volumes:
+    volumes:
       - "./data/opt/crossbar:/node"
 #      - "./data/var/log/crossbar:/var/log/crossbar"
 #    entrypoint:

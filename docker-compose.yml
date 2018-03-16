@@ -86,29 +86,34 @@ services:
 #    environment:
 #      NASSAU_SOUPBINTCP_GATEWAY_UPSTREAM_MULTICAST_PORT: '6000'
 #      NASSAU_SOUPBINTCP_GATEWAY_UPSTREAM_REQUEST_PORT: '6001'
-#  api:
-#    container_name: ${APP_NAME}_${API_HOST}
-#    build: './docker/resapi'
-#    restart: always
-#    expose:
-#      - '3000'
-#    depends_on:
-#      - 'mongo'
-#    networks:
-#      - db-net
-#      - web-net
+  api:
+    container_name: ${APP_NAME}_${API_HOST}
+    build: './docker/resapi'
+    restart: always
+    ports:
+      - '3500:3000'
+    expose:
+      - '3000'
+    depends_on:
+      - 'mongo'
+    networks:
+      - db-net
+      - web-net
   proxy:
     image: 'jwilder/nginx-proxy'
     container_name: ${APP_NAME}_${PROXY_HOST}
     ports:
       - '8081:80'
+      - '8443:443'
     networks:
       - web-net
+    depends_on:
+      - crossbar
     volumes:
-      - './docker/web:/usr/share/nginx/html'
       - "./data/etc/nginx/nginx.conf:/etc/nginx/conf.d/my_proxy.conf"
       - "./data/var/log:/var/log/"
       - "/var/run/docker.sock:/tmp/docker.sock:ro"
+      - "./docker/nginx/www/:/var/www/"
   mongo:
     image: 'mongo:latest'
     container_name: ${APP_NAME}_${MONGO_HOST}

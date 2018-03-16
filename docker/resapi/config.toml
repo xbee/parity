@@ -1,0 +1,2 @@
+server="mongo"
+database="contacts_db"

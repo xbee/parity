@@ -1,7 +1,6 @@
-version: '3'
+version: '3.3'
 services:
   engine:
-#    build: './docker/parity-system'
     image: 'openjdk:8-jre-alpine'
     container_name: ${APP_NAME}_${ENGINE_HOST}
     # TODO: need to remove in production
@@ -20,11 +19,11 @@ services:
       - -jar
       - /opt/parity/parity-system.jar
       - /opt/parity/parity-system.conf
+    networks:
+      - web-net
 #  fix:
 #    image: 'openjdk:8-jre-alpine'
 #    container_name: ${APP_NAME}_${FIX_HOST}
-#    ports:
-#      - '4010:4010'
 #    expose:
 #      - "4010"
 #    volumes:
@@ -50,6 +49,8 @@ services:
     depends_on:
       - engine
       - crossbar
+    networks:
+      - web-net
   ticker:
       image: 'openjdk:8-jre-alpine'
       container_name: ${APP_NAME}_${TICKER_HOST}
@@ -63,6 +64,8 @@ services:
       depends_on:
         - engine
         - crossbar
+      networks:
+        - web-net
 #  client:
 #    image: 'openjdk:8-jre-alpine'
 #    volumes:
@@ -85,36 +88,41 @@ services:
 #      NASSAU_SOUPBINTCP_GATEWAY_UPSTREAM_REQUEST_PORT: '6001'
 #  api:
 #    container_name: ${APP_NAME}_${API_HOST}
-#    build: './docker/api'
+#    build: './docker/resapi'
 #    restart: always
-#    ports:
-#      - '8082:8080'
-#    volumes:
-#      - './api:/go/src/app'
+#    expose:
+#      - '3000'
 #    depends_on:
 #      - 'mongo'
+#    networks:
+#      - db-net
+#      - web-net
   proxy:
     image: 'jwilder/nginx-proxy'
     container_name: ${APP_NAME}_${PROXY_HOST}
     ports:
       - '8081:80'
+    networks:
+      - web-net
     volumes:
       - './docker/web:/usr/share/nginx/html'
-      - "./etc/nginx/nginx.conf:/etc/nginx/conf.d/my_proxy.conf"
+      - "./data/etc/nginx/nginx.conf:/etc/nginx/conf.d/my_proxy.conf"
       - "./data/var/log:/var/log/"
       - "/var/run/docker.sock:/tmp/docker.sock:ro"
-#  mongo:
-#    image: 'mongo:latest'
-#    container_name: ${APP_NAME}_${MONGO_HOST}
-#    restart: always
-#    # just need in developing
-#    # in production it should be remove
-#    ports:
-#      - '27100:27017'
-#    volumes:
-#      - "./data/db/mongo:/data/db"
-#    expose:
-#      - '27017'
+  mongo:
+    image: 'mongo:latest'
+    container_name: ${APP_NAME}_${MONGO_HOST}
+    restart: always
+    # just need in developing
+    # in production it should be remove
+    ports:
+      - '27100:27017'
+    volumes:
+      - "./data/db/mongo:/data/db:rw"
+    expose:
+      - '27017'
+    networks:
+      - db-net
 #  mysqldb:
 #    image: mysql
 #    container_name: ${APP_NAME}_${MYSQL_HOST}
@@ -136,6 +144,8 @@ services:
     restart: always
     expose:
       - '8080'
+    networks:
+      - web-net
     volumes:
       - "./data/opt/crossbar:/node"
 #      - "./data/var/log/crossbar:/var/log/crossbar"
@@ -151,6 +161,13 @@ services:
     container_name: ${APP_NAME}_${REPLICATOR_HOST}
     depends_on:
       - engine
+      - ticker
+    networks:
+      - web-net
 #    entrypoint:
 #      - /bin/sh
+
+networks:
+  db-net:
+  web-net:
 

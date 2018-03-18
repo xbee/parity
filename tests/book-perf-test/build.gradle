@@ -1,0 +1,7 @@
+
+description = 'Parity Order Book Performance Test'
+dependencies {
+  compile project(':parity-book')
+    compile group: 'org.openjdk.jmh', name: 'jmh-core', version:'1.19'
+    compileOnly group: 'org.openjdk.jmh', name: 'jmh-generator-annprocess', version:'1.19'
+}

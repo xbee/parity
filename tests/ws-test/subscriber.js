@@ -5,7 +5,10 @@ try {
    // for browsers (where AutobahnJS is available globally)
 }
 
+var Guid = require("guid");
 var connection = new autobahn.Connection({url: 'ws://localhost:8081/ws/', realm: 'realm1'});
+
+var FUNC_CREATEORDER = "tridex.dev.orders.create";
 
 connection.onopen = function (session) {
 
@@ -29,6 +32,15 @@ connection.onopen = function (session) {
       return args[0] + args[1];
    }
    session.register('com.myapp.add2', add2);
+
+   function createNewOrder(args) {
+        console.log("create new order: ", args);
+        // create a order number(guid)
+        var guid = Guid.create();
+        orderNumber = guid.value;
+        return {"status": "ok", "data": {"on": orderNumber, "ts": Date.now()}}
+   }
+   session.register(FUNC_CREATEORDER, createNewOrder);
 
    // 4) call a remote procedure
    session.call('com.myapp.add2', [2, 3]).then(

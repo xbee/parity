@@ -1,0 +1,32 @@
+rootProject.name = 'parity-parent'
+include ':parity-book'
+include ':parity-file'
+include ':parity-match'
+include ':parity-net'
+include ':parity-util'
+include ':parity-client'
+include ':parity-fix'
+include ':parity-reporter'
+include ':parity-system'
+include ':parity-ticker'
+include ':parity-obm'
+include ':parity-wsreporter'
+include ':parity-wsticker'
+include ':parity-book-perf-test'
+include ':parity-match-perf-test'
+
+project(':parity-book').projectDir = "$rootDir/libraries/book" as File
+project(':parity-file').projectDir = "$rootDir/libraries/file" as File
+project(':parity-match').projectDir = "$rootDir/libraries/match" as File
+project(':parity-net').projectDir = "$rootDir/libraries/net" as File
+project(':parity-util').projectDir = "$rootDir/libraries/util" as File
+project(':parity-client').projectDir = "$rootDir/applications/client" as File
+project(':parity-fix').projectDir = "$rootDir/applications/fix" as File
+project(':parity-reporter').projectDir = "$rootDir/applications/reporter" as File
+project(':parity-system').projectDir = "$rootDir/applications/system" as File
+project(':parity-ticker').projectDir = "$rootDir/applications/ticker" as File
+project(':parity-obm').projectDir = "$rootDir/applications/obm" as File
+project(':parity-wsreporter').projectDir = "$rootDir/applications/wsreporter" as File
+project(':parity-wsticker').projectDir = "$rootDir/applications/wsticker" as File
+project(':parity-book-perf-test').projectDir = "$rootDir/tests/book-perf-test" as File
+project(':parity-match-perf-test').projectDir = "$rootDir/tests/match-perf-test" as File

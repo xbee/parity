@@ -1,0 +1,6 @@
+
+description = 'Parity Network Protocols'
+dependencies {
+    compile group: 'com.paritytrading.foundation', name: 'foundation', version:'0.2.1'
+    compile group: 'com.paritytrading.nassau', name: 'nassau-core', version:'0.13.0'
+}

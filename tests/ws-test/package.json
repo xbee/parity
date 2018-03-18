@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "autobahn": "^17.5.2",
-    "bson": "^2.0.2"
+    "bson": "^2.0.2",
+    "guid": "0.0.12"
   }
 }

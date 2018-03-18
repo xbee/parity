@@ -23,20 +23,19 @@
     <orderEntry type="library" name="Maven: org.eclipse.collections:eclipse-collections-api:8.2.0" level="project" />
     <orderEntry type="library" name="Maven: net.jcip:jcip-annotations:1.0" level="project" />
     <orderEntry type="library" name="Maven: org.eclipse.collections:eclipse-collections:8.2.0" level="project" />
-    <orderEntry type="library" name="Maven: ws.wamp.jawampa:jawampa-core:0.5.0" level="project" />
-    <orderEntry type="library" name="Maven: io.reactivex:rxjava:1.0.8" level="project" />
-    <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-databind:2.4.4" level="project" />
-    <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-annotations:2.4.0" level="project" />
-    <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-core:2.4.4" level="project" />
-    <orderEntry type="library" name="Maven: org.msgpack:jackson-dataformat-msgpack:0.7.0-p7" level="project" />
-    <orderEntry type="library" name="Maven: org.msgpack:msgpack-core:0.7.0-p7" level="project" />
-    <orderEntry type="library" name="Maven: ws.wamp.jawampa:jawampa-netty:0.5.0" level="project" />
-    <orderEntry type="library" name="Maven: io.netty:netty-codec-http:4.1.11.Final" level="project" />
-    <orderEntry type="library" name="Maven: io.netty:netty-codec:4.1.11.Final" level="project" />
-    <orderEntry type="library" name="Maven: io.netty:netty-handler:4.1.11.Final" level="project" />
-    <orderEntry type="library" name="Maven: io.netty:netty-buffer:4.1.11.Final" level="project" />
-    <orderEntry type="library" name="Maven: io.netty:netty-common:4.1.11.Final" level="project" />
-    <orderEntry type="library" name="Maven: io.netty:netty-transport:4.1.11.Final" level="project" />
-    <orderEntry type="library" name="Maven: io.netty:netty-resolver:4.1.11.Final" level="project" />
+    <orderEntry type="library" name="Maven: io.crossbar.autobahn:autobahn-java:17.10.5" level="project" />
+    <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-core:2.8.8" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: com.fasterxml.jackson.core:jackson-databind:2.8.8" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: com.fasterxml.jackson.core:jackson-annotations:2.8.0" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: com.fasterxml.jackson.dataformat:jackson-dataformat-cbor:2.8.8" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: org.msgpack:jackson-dataformat-msgpack:0.8.13" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: org.msgpack:msgpack-core:0.8.13" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: io.netty:netty-codec-http:4.1.2.Final" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: io.netty:netty-codec:4.1.2.Final" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: io.netty:netty-handler:4.1.2.Final" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: io.netty:netty-buffer:4.1.2.Final" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: io.netty:netty-common:4.1.2.Final" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: io.netty:netty-transport:4.1.2.Final" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: io.netty:netty-resolver:4.1.2.Final" level="project" />
   </component>
 </module>

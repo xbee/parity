@@ -1,0 +1,15 @@
+
+description = 'Parity Terminal Client'
+dependencies {
+  compile project(':parity-net')
+  compile project(':parity-util')
+    compile group: 'com.paritytrading.foundation', name: 'foundation', version:'0.2.1'
+    compile group: 'com.paritytrading.nassau', name: 'nassau-core', version:'0.13.0'
+    compile group: 'com.typesafe', name: 'config', version:'1.3.1'
+    compile group: 'jline', name: 'jline', version:'2.14.5'
+    compile group: 'org.jvirtanen.config', name: 'config-extras', version:'0.2.0'
+    compile group: 'org.jvirtanen.util', name: 'util-extras', version:'0.2.0'
+    compile group: 'org.eclipse.collections', name: 'eclipse-collections-api', version:'8.2.0'
+    compile group: 'org.eclipse.collections', name: 'eclipse-collections', version:'8.2.0'
+    testCompile group: 'junit', name: 'junit', version:'4.12'
+}

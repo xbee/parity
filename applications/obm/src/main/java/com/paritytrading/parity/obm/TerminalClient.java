@@ -20,26 +20,20 @@ import java.net.InetSocketAddress;
 import java.nio.channels.ClosedChannelException;
 import java.util.Locale;
 import java.util.Scanner;
-import java.util.concurrent.TimeUnit;
+import java.util.logging.Logger;
+
+
 
 import jline.console.ConsoleReader;
 import jline.console.completer.StringsCompleter;
 import org.jvirtanen.config.Configs;
-import rx.Subscription;
-import rx.functions.Action0;
-import rx.functions.Action1;
-import ws.wamp.jawampa.ApplicationError;
-import ws.wamp.jawampa.Request;
-import ws.wamp.jawampa.WampClient;
-import ws.wamp.jawampa.WampClientBuilder;
-import ws.wamp.jawampa.connection.IWampConnectorProvider;
-import ws.wamp.jawampa.transport.netty.NettyWampClientConnectorProvider;
 
 public class TerminalClient implements Closeable {
 
+    private static final Logger LOGGER = Logger.getLogger(TerminalClient.class.getName());
     public static final Locale LOCALE = Locale.US;
     private static WampClient wampclt;
-    private static Subscription addProcSubscription;
+//    private static Subscription addProcSubscription;
 
     public static final long NANOS_PER_MILLI = 1_000_000;
 
@@ -52,70 +46,6 @@ public class TerminalClient implements Closeable {
     private OrderIDGenerator orderIdGenerator;
 
     private boolean closed;
-
-    private static void initWampClient(String url, String realm) {
-        try {
-            IWampConnectorProvider connectorProvider = new NettyWampClientConnectorProvider();
-            WampClientBuilder builder = new WampClientBuilder();
-
-            builder.withConnectorProvider(connectorProvider)
-                    .withUri(url)
-                    .withRealm(realm)
-                    .withInfiniteReconnects()
-                    .withReconnectInterval(3, TimeUnit.SECONDS);
-
-            // Create a client through the builder. This will not immediatly start
-            // a connection attempt
-            wampclt = builder.build();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            return;
-        }
-
-        wampclt.statusChanged().subscribe(new Action1<WampClient.State>() {
-            @Override
-            public void call(WampClient.State t1) {
-                System.out.println("Session1 status changed to " + t1);
-
-                if (t1 instanceof WampClient.ConnectedState) {
-                    // Register a procedure
-                    addProcSubscription = wampclt.registerProcedure("order.place").subscribe(new Action1<Request>() {
-                        @Override
-                        public void call(Request request) {
-                            if (request.arguments() == null || request.arguments().size() != 2
-                                    || !request.arguments().get(0).canConvertToLong()
-                                    || !request.arguments().get(1).canConvertToLong())
-                            {
-                                try {
-                                    request.replyError(new ApplicationError(ApplicationError.INVALID_PARAMETER));
-                                } catch (ApplicationError e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                            else {
-                                long a = request.arguments().get(0).asLong();
-                                long b = request.arguments().get(1).asLong();
-                                request.reply(a + b);
-                            }
-                        }
-                    });
-                }
-            }
-        }, new Action1<Throwable>() {
-            @Override
-            public void call(Throwable t) {
-                System.out.println("Session1 ended with error " + t);
-            }
-        }, new Action0() {
-            @Override
-            public void call() {
-                System.out.println("Session1 ended normally");
-            }
-        });
-
-        wampclt.open();
-    }
 
     private TerminalClient(Events events, OrderEntry orderEntry, Instruments instruments) {
         this.events      = events;
@@ -234,7 +164,7 @@ public class TerminalClient implements Closeable {
         String routerUrl = config.getString("wamp-router.url");
         String routerRealm = config.getString("wamp-router.realm");
         // init WAMP Client: connect to WAMP router
-        initWampClient(routerUrl, routerRealm);
+        wampclt.Start(routerUrl, routerRealm);
 
         TerminalClient.open(new InetSocketAddress(orderEntryAddress, orderEntryPort),
                 orderEntryUsername, orderEntryPassword, instruments).run();

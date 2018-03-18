@@ -3,6 +3,13 @@
 
   <modelVersion>4.0.0</modelVersion>
 
+  <!--<repositories>-->
+    <!--<repository>-->
+      <!--<id>local-maven-repo</id>-->
+      <!--<url>file:///${project.basedir}/thirdparty</url>-->
+    <!--</repository>-->
+  <!--</repositories>-->
+
   <parent>
     <groupId>org.sonatype.oss</groupId>
     <artifactId>oss-parent</artifactId>

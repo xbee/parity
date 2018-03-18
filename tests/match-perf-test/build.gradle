@@ -1,0 +1,7 @@
+
+description = 'Parity Matching Algorithm Performance Test'
+dependencies {
+  compile project(':parity-match')
+    compile group: 'org.openjdk.jmh', name: 'jmh-core', version:'1.19'
+    compileOnly group: 'org.openjdk.jmh', name: 'jmh-generator-annprocess', version:'1.19'
+}

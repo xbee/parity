@@ -21,23 +21,22 @@ services:
       - /opt/parity/parity-system.conf
     networks:
       - core-net
-  fix:
-    image: 'openjdk:8-jre-alpine'
-    container_name: ${APP_NAME}_${FIX_HOST}
-    expose:
-      - "4010"
-    volumes:
-      - "./data/opt/parity:/opt/parity"
-    entrypoint:
-      - /usr/bin/java
-      - -jar
-      - /opt/parity/parity-fix.jar
-      - /opt/parity/parity-fix.conf
-    depends_on:
-      - engine
-    networks:
-      - core-net
-      - web-net
+#  fix:
+#    image: 'openjdk:8-jre-alpine'
+#    container_name: ${APP_NAME}_${FIX_HOST}
+#    expose:
+#      - "4010"
+#    volumes:
+#      - "./data/opt/parity:/opt/parity"
+#    entrypoint:
+#      - /usr/bin/java
+#      - -jar
+#      - /opt/parity/parity-fix.jar
+#      - /opt/parity/parity-fix.conf
+#    depends_on:
+#      - engine
+#    networks:
+#      - web-net
   wsreporter:
     image: 'openjdk:8-jre-alpine'
     container_name: ${APP_NAME}_${REPORTER_HOST}
@@ -69,8 +68,8 @@ services:
         - engine
         - crossbar
       networks:
-        - core-net
         - web-net
+        - core-net
 #  client:
 #    image: 'openjdk:8-jre-alpine'
 #    volumes:
@@ -100,25 +99,35 @@ services:
     expose:
       - '3000'
     depends_on:
-      - 'mongo'
+      - mongo
+      - crossbar
     networks:
       - db-net
       - web-net
   proxy:
-    image: 'jwilder/nginx-proxy'
+#    image: 'jwilder/nginx-proxy'
+    image: 'itwars/nginx-http2'
     container_name: ${APP_NAME}_${PROXY_HOST}
     ports:
       - '8081:80'
-      - '8443:443'
+      - '8020:8020'
+      - '8030:8030'
+#      - '8443:443'
+    expose:
+      - '80'
+      - '8020'
+      - '8030'
     networks:
       - web-net
     depends_on:
       - crossbar
+      - api
     volumes:
-      - "./data/etc/nginx/nginx.conf:/etc/nginx/conf.d/my_proxy.conf"
+#      - "./data/etc/nginx/api_proxy.conf:/etc/nginx/conf.d/api_proxy.conf"
+      - "./data/etc/nginx/conf/:/etc/nginx/conf.d/"
       - "./data/var/log:/var/log/"
       - "/var/run/docker.sock:/tmp/docker.sock:ro"
-      - "./docker/nginx/www/:/var/www/"
+      - "./docker/nginx/www/:/usr/share/nginx/html/"
   mongo:
     image: 'mongo:latest'
     container_name: ${APP_NAME}_${MONGO_HOST}
@@ -171,7 +180,7 @@ services:
     container_name: ${APP_NAME}_${REPLICATOR_HOST}
     depends_on:
       - engine
-      - ticker
+#      - ticker
     networks:
       - core-net
 #    entrypoint:

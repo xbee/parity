@@ -1,7 +1,10 @@
 FROM golang
 
+#ARG CODE=.
+#ENV CODE $CODE
+#CMD [ "echo $API_CODE" ]
 
-WORKDIR /go/src/github.com/user/app
+WORKDIR /go/src/tridex/restapi
 COPY . .
 RUN set -x && \ 
     go get -d -v . && \
@@ -9,6 +12,6 @@ RUN set -x && \
 
 FROM scratch
 WORKDIR /root/
-COPY --from=0 /go/src/github.com/user/app .
+COPY --from=0 /go/src/tridex/restapi .
 EXPOSE 3000
 CMD ["./app"]  

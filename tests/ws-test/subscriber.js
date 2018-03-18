@@ -6,7 +6,7 @@ try {
 }
 
 var Guid = require("guid");
-var connection = new autobahn.Connection({url: 'ws://localhost:8081/ws/', realm: 'realm1'});
+var connection = new autobahn.Connection({url: 'ws://localhost:8020/ws/', realm: 'realm1'});
 
 var FUNC_CREATEORDER = "tridex.dev.orders.create";
 
@@ -40,7 +40,7 @@ connection.onopen = function (session) {
         orderNumber = guid.value;
         return {"status": "ok", "data": {"on": orderNumber, "ts": Date.now()}}
    }
-   session.register(FUNC_CREATEORDER, createNewOrder);
+//    session.register(FUNC_CREATEORDER, createNewOrder);
 
    // 4) call a remote procedure
    session.call('com.myapp.add2', [2, 3]).then(

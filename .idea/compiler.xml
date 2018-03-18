@@ -26,6 +26,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="core" target="1.8" />
       <module name="fluent-logger" target="6" />
       <module name="parity-book" target="1.8" />
       <module name="parity-book-perf-test" target="1.8" />

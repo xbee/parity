@@ -18,3 +18,5 @@ tests/book-perf-test/build
 tests/match-perf-test/build
 subscriber
 applications/reporter/build
+data/opt/crossbar/.crossbar
+docker/genesis

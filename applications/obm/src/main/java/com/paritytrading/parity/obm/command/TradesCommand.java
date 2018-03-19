@@ -1,18 +1,20 @@
 package com.paritytrading.parity.obm.command;
 
-import com.paritytrading.parity.obm.TerminalClient;
+import com.paritytrading.parity.obm.OrderManager;
 import com.paritytrading.parity.obm.event.Trade;
 import com.paritytrading.parity.obm.event.Trades;
 import com.paritytrading.parity.util.Instruments;
 import com.paritytrading.parity.util.TableHeader;
+
+import java.util.List;
 import java.util.Scanner;
 
 class TradesCommand implements Command {
 
     @Override
-    public void execute(TerminalClient client, Scanner arguments) throws CommandException {
-        if (arguments.hasNext())
-            throw new CommandException();
+    public void execute(OrderManager client, List<Object> arguments) throws CommandException {
+//        if (arguments.hasNext())
+//            throw new CommandException();
 
         Instruments instruments = client.getInstruments();
 

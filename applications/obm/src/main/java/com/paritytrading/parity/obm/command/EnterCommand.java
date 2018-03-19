@@ -1,10 +1,11 @@
 package com.paritytrading.parity.obm.command;
 
 import com.paritytrading.foundation.ASCII;
-import com.paritytrading.parity.obm.TerminalClient;
+import com.paritytrading.parity.obm.OrderManager;
 import com.paritytrading.parity.net.poe.POE;
 import com.paritytrading.parity.util.Instrument;
 import java.io.IOException;
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
@@ -18,33 +19,46 @@ class EnterCommand implements Command {
         this.message.side = side;
     }
 
-    @Override
-    public void execute(TerminalClient client, Scanner arguments) throws CommandException, IOException {
-        try {
-            double quantity   = arguments.nextDouble();
-            long   instrument = ASCII.packLong(arguments.next());
-            double price      = arguments.nextDouble();
+    public EnterCommand() {
+        this.message = new POE.EnterOrder();
+    }
 
-            if (arguments.hasNext())
-                throw new CommandException();
+    // arg 0: account | text
+    // arg 1: side | int
+    // arg 2: symbol | text
+    // arg 3: amount | number
+    // arg 4: price | number
+    @Override
+    public void execute(OrderManager client, List<Object> arguments) throws CommandException, IOException {
+        try {
+            if (arguments.size() != 5)
+                throw new CommandException("Wrong size of args!");
+
+//            String account = (String) arguments.get(0);
+            double quantity   = (double) arguments.get(3);
+            long   instrument = (long)arguments.get(2);
+            double price      = (double) arguments.get(4);
+            boolean isbuy  = (boolean) arguments.get(1);
 
             Instrument config = client.getInstruments().get(instrument);
             if (config == null)
-                throw new CommandException();
+                throw new CommandException("Wrong instrument id!");
 
-            execute(client, Math.round(quantity * config.getSizeFactor()), instrument, Math.round(price * config.getPriceFactor()));
+            execute(client, isbuy, Math.round(quantity * config.getSizeFactor()), instrument, Math.round(price * config.getPriceFactor()));
         } catch (NoSuchElementException e) {
             throw new CommandException();
         }
     }
 
-    private void execute(TerminalClient client, long quantity, long instrument, long price) throws IOException {
+    private void execute(OrderManager client, boolean isbuy, long quantity, long instrument, long price) throws IOException {
+        // generate order id
         String orderId = client.getOrderIdGenerator().next();
 
         ASCII.putLeft(message.orderId, orderId);
         message.quantity   = quantity;
         message.instrument = instrument;
         message.price      = price;
+        message.side       = isbuy ? POE.BUY : POE.SELL;
 
         client.getOrderEntry().send(message);
 

@@ -12,7 +12,7 @@ public class Orders extends DefaultEventVisitor {
         orders = Maps.mutable.with();
     }
 
-    public static ImmutableList<Order> collect(Events events) {
+    public static ImmutableList<Order> collect(POEListener events) {
         Orders visitor = new Orders();
 
         events.accept(visitor);

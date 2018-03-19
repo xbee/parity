@@ -21,22 +21,24 @@ services:
       - /opt/parity/parity-system.conf
     networks:
       - core-net
-#  fix:
-#    image: 'openjdk:8-jre-alpine'
-#    container_name: ${APP_NAME}_${FIX_HOST}
-#    expose:
-#      - "4010"
-#    volumes:
-#      - "./data/opt/parity:/opt/parity"
-#    entrypoint:
-#      - /usr/bin/java
-#      - -jar
-#      - /opt/parity/parity-fix.jar
-#      - /opt/parity/parity-fix.conf
-#    depends_on:
-#      - engine
-#    networks:
-#      - web-net
+  fix:
+    image: 'openjdk:8-jre-alpine'
+    container_name: ${APP_NAME}_${FIX_HOST}
+    ports:
+      - "4010:4010"
+    expose:
+      - "4010"
+    volumes:
+      - "./data/opt/parity:/opt/parity"
+    entrypoint:
+      - /usr/bin/java
+      - -jar
+      - /opt/parity/parity-fix.jar
+      - /opt/parity/parity-fix.conf
+    depends_on:
+      - engine
+    networks:
+      - core-net
   wsreporter:
     image: 'openjdk:8-jre-alpine'
     container_name: ${APP_NAME}_${REPORTER_HOST}
@@ -70,12 +72,21 @@ services:
       networks:
         - web-net
         - core-net
-#  client:
-#    image: 'openjdk:8-jre-alpine'
-#    volumes:
-#      - "./data/opt/parity:/opt/parity"
-#    depends_on:
-#      - engine
+  client:
+    image: 'openjdk:8-jre-alpine'
+    volumes:
+      - "./data/opt/parity:/opt/parity"
+    depends_on:
+      - engine
+      - crossbar
+    networks:
+      - core-net
+      - web-net
+    entrypoint:
+      - /usr/bin/java
+      - -jar
+      - /opt/parity/parity-obm.jar
+      - /opt/parity/parity-client.conf
 #  market-data-gateway:
 #    build: './docker/nassau-soupbintcp-gateway'
 #    ports:

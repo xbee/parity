@@ -5,11 +5,11 @@ import com.paritytrading.parity.net.poe.POEClientListener;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.impl.factory.Lists;
 
-public class Events implements POEClientListener {
+public class POEListener implements POEClientListener {
 
     private volatile ImmutableList<Event> events;
 
-    public Events() {
+    public POEListener() {
         events = Lists.immutable.with();
     }
 

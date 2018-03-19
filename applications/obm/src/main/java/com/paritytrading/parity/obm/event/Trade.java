@@ -1,7 +1,7 @@
 package com.paritytrading.parity.obm.event;
 
 import com.paritytrading.foundation.ASCII;
-import com.paritytrading.parity.obm.TerminalClient;
+import com.paritytrading.parity.obm.OrderManager;
 import com.paritytrading.parity.util.Instrument;
 import com.paritytrading.parity.util.Instruments;
 import com.paritytrading.parity.util.Timestamps;
@@ -32,8 +32,8 @@ public class Trade {
 
         String format = "%12s %16s %c %8s " + sizeFormat + " " + priceFormat;
 
-        return String.format(TerminalClient.LOCALE, format,
-                Timestamps.format(timestamp / TerminalClient.NANOS_PER_MILLI), order.getOrderId(), order.getSide(),
+        return String.format(OrderManager.LOCALE, format,
+                Timestamps.format(timestamp / OrderManager.NANOS_PER_MILLI), order.getOrderId(), order.getSide(),
                 ASCII.unpackLong(order.getInstrument()), quantity / config.getSizeFactor(),
                 price / config.getPriceFactor());
     }

@@ -1,28 +1,32 @@
 package com.paritytrading.parity.obm.command;
 
-import com.paritytrading.parity.obm.TerminalClient;
+import com.paritytrading.parity.obm.OrderManager;
+
+import java.util.List;
 import java.util.Scanner;
 
 class HelpCommand implements Command {
 
     @Override
-    public void execute(TerminalClient client, Scanner arguments) throws CommandException {
-        if (arguments.hasNext()) {
-            Command command = Commands.find(arguments.next());
+    public void execute(OrderManager client, List<Object> arguments) throws CommandException {
+//        if (arguments.hasNext()) {
+//            Command command = Commands.find(arguments.next());
+//
+////            if (arguments.hasNext())
+////                throw new CommandException();
+//
+//            if (command != null)
+//                displayCommandHelp(client, command);
+//            else
+//                displayGeneralHelp(client);
+//        } else {
+//            displayGeneralHelp(client);
+//        }
 
-            if (arguments.hasNext())
-                throw new CommandException();
-
-            if (command != null)
-                displayCommandHelp(client, command);
-            else
-                displayGeneralHelp(client);
-        } else {
-            displayGeneralHelp(client);
-        }
+        displayGeneralHelp(client);
     }
 
-    private void displayGeneralHelp(TerminalClient client) {
+    private void displayGeneralHelp(OrderManager client) {
         client.printf("Commands:\n");
 
         int maxCommandNameLength = calculateMaxCommandNameLength();
@@ -33,7 +37,7 @@ class HelpCommand implements Command {
         client.printf("\nType 'help <command>' for command specific help.\n");
     }
 
-    private void displayCommandHelp(TerminalClient client, Command command) {
+    private void displayCommandHelp(OrderManager client, Command command) {
         client.printf("Usage: %s\n\n  %s\n\n", command.getUsage(), command.getDescription());
     }
 

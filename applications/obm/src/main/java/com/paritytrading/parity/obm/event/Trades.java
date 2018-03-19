@@ -17,7 +17,7 @@ public class Trades extends DefaultEventVisitor {
         trades = Multimaps.mutable.bag.with();
     }
 
-    public static ImmutableList<Trade> collect(Events events) {
+    public static ImmutableList<Trade> collect(POEListener events) {
         Trades visitor = new Trades();
 
         events.accept(visitor);

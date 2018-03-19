@@ -12,7 +12,7 @@ public class Errors extends DefaultEventVisitor {
         errors = Lists.mutable.with();
     }
 
-    public static ImmutableList<Error> collect(Events events) {
+    public static ImmutableList<Error> collect(POEListener events) {
         Errors visitor = new Errors();
 
         events.accept(visitor);

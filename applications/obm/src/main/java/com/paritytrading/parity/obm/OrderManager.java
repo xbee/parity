@@ -4,10 +4,7 @@ import static org.jvirtanen.util.Applications.*;
 
 import com.paritytrading.foundation.ASCII;
 import com.paritytrading.nassau.soupbintcp.SoupBinTCP;
-import com.paritytrading.parity.obm.command.Command;
-import com.paritytrading.parity.obm.command.CommandException;
-import com.paritytrading.parity.obm.command.Commands;
-import com.paritytrading.parity.obm.event.Events;
+import com.paritytrading.parity.obm.event.POEListener;
 import com.paritytrading.parity.util.Instruments;
 import com.paritytrading.parity.util.OrderIDGenerator;
 import com.typesafe.config.Config;
@@ -17,7 +14,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
-import java.nio.channels.ClosedChannelException;
 import java.util.Locale;
 import java.util.Scanner;
 import java.util.logging.Logger;
@@ -25,21 +21,21 @@ import java.util.logging.Logger;
 
 
 import jline.console.ConsoleReader;
-import jline.console.completer.StringsCompleter;
 import org.jvirtanen.config.Configs;
 
-public class TerminalClient implements Closeable {
+public class OrderManager implements Closeable {
 
-    private static final Logger LOGGER = Logger.getLogger(TerminalClient.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(OrderManager.class.getName());
     public static final Locale LOCALE = Locale.US;
     private static WampClient wampclt;
 //    private static Subscription addProcSubscription;
 
     public static final long NANOS_PER_MILLI = 1_000_000;
 
-    private Events events;
+    private POEListener evtListener;
 
     private OrderEntry orderEntry;
+    private WampClient wampClient;
 
     private Instruments instruments;
 
@@ -47,19 +43,20 @@ public class TerminalClient implements Closeable {
 
     private boolean closed;
 
-    private TerminalClient(Events events, OrderEntry orderEntry, Instruments instruments) {
-        this.events      = events;
+    private OrderManager(POEListener listener, OrderEntry orderEntry, Instruments instruments) {
+        this.evtListener = listener;
         this.orderEntry  = orderEntry;
         this.instruments = instruments;
 
         this.orderIdGenerator = new OrderIDGenerator();
+        this.wampClient = new WampClient(orderEntry);
     }
 
-    public static TerminalClient open(InetSocketAddress address, String username,
-            String password, Instruments instruments) throws IOException {
-        Events events = new Events();
+    public static OrderManager open(InetSocketAddress address, String username,
+                                    String password, Instruments instruments) throws IOException {
+        POEListener listener = new POEListener();
 
-        OrderEntry orderEntry = OrderEntry.open(address, events);
+        OrderEntry orderEntry = OrderEntry.open(address, listener);
 
         SoupBinTCP.LoginRequest loginRequest = new SoupBinTCP.LoginRequest();
 
@@ -70,7 +67,7 @@ public class TerminalClient implements Closeable {
 
         orderEntry.getTransport().login(loginRequest);
 
-        return new TerminalClient(events, orderEntry, instruments);
+        return new OrderManager(listener, orderEntry, instruments);
     }
 
     public OrderEntry getOrderEntry() {
@@ -85,43 +82,44 @@ public class TerminalClient implements Closeable {
         return orderIdGenerator;
     }
 
-    public Events getEvents() {
-        return events;
+    public POEListener getEvents() {
+        return evtListener;
     }
 
     public void run() throws IOException {
-        ConsoleReader reader = new ConsoleReader();
+//        this.wampClient.open()
+//        ConsoleReader reader = new ConsoleReader();
 
-        reader.addCompleter(new StringsCompleter(Commands.names().castToList()));
+//        reader.addCompleter(new StringsCompleter(Commands.names().castToList()));
 
-        printf("Type 'help' for help.\n");
+//        printf("Type 'help' for help.\n");
 
-        while (!closed) {
-            String line = reader.readLine("> ");
-            if (line == null)
-                break;
+//        while (!closed) {
+//            String line = reader.readLine("> ");
+//            if (line == null)
+//                break;
+//
+//            Scanner scanner = scan(line);
+//
+//            if (!scanner.hasNext())
+//                continue;
+//
+//            Command command = Commands.find(scanner.next());
+//            if (command == null) {
+//                printf("error: Unknown command\n");
+//                continue;
+//            }
+//
+//            try {
+//                command.execute(this, scanner);
+//            } catch (CommandException e) {
+//                printf("Usage: %s\n", command.getUsage());
+//            } catch (ClosedChannelException e) {
+//                printf("error: Connection closed\n");
+//            }
+//        }
 
-            Scanner scanner = scan(line);
-
-            if (!scanner.hasNext())
-                continue;
-
-            Command command = Commands.find(scanner.next());
-            if (command == null) {
-                printf("error: Unknown command\n");
-                continue;
-            }
-
-            try {
-                command.execute(this, scanner);
-            } catch (CommandException e) {
-                printf("Usage: %s\n", command.getUsage());
-            } catch (ClosedChannelException e) {
-                printf("error: Connection closed\n");
-            }
-        }
-
-        close();
+//        close();
     }
 
     @Override
@@ -163,11 +161,12 @@ public class TerminalClient implements Closeable {
 
         String routerUrl = config.getString("wamp-router.url");
         String routerRealm = config.getString("wamp-router.realm");
-        // init WAMP Client: connect to WAMP router
-        wampclt.Start(routerUrl, routerRealm);
 
-        TerminalClient.open(new InetSocketAddress(orderEntryAddress, orderEntryPort),
-                orderEntryUsername, orderEntryPassword, instruments).run();
+        OrderManager om = OrderManager.open(new InetSocketAddress(orderEntryAddress, orderEntryPort),
+                orderEntryUsername, orderEntryPassword, instruments);
+        // init WAMP Client: connect to WAMP router
+        om.wampClient.open(routerUrl, routerRealm);
+
     }
 
 }

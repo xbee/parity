@@ -1,9 +1,10 @@
 package com.paritytrading.parity.obm.command;
 
 import com.paritytrading.foundation.ASCII;
-import com.paritytrading.parity.obm.TerminalClient;
+import com.paritytrading.parity.obm.OrderManager;
 import com.paritytrading.parity.net.poe.POE;
 import java.io.IOException;
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
@@ -16,12 +17,12 @@ class CancelCommand implements Command {
     }
 
     @Override
-    public void execute(TerminalClient client, Scanner arguments) throws CommandException, IOException {
+    public void execute(OrderManager client, List<Object> arguments) throws CommandException, IOException {
         try {
-            String orderId = arguments.next();
+            if (arguments.size() != 2)
+                throw new CommandException("Invalid number of arguments!");
 
-            if (arguments.hasNext())
-                throw new CommandException();
+            String orderId = (String) arguments.get(0);
 
             execute(client, orderId);
         } catch (NoSuchElementException e) {
@@ -29,7 +30,7 @@ class CancelCommand implements Command {
         }
     }
 
-    private void execute(TerminalClient client, String orderId) throws IOException {
+    private void execute(OrderManager client, String orderId) throws IOException {
         ASCII.putLeft(message.orderId, orderId);
         message.quantity = 0;
 

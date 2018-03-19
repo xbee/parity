@@ -113,7 +113,7 @@
           <outputFile>parity-obm.jar</outputFile>
           <transformers>
             <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-              <mainClass>com.paritytrading.parity.obm.TerminalClient</mainClass>
+              <mainClass>com.paritytrading.parity.obm.OrderManager</mainClass>
             </transformer>
           </transformers>
         </configuration>

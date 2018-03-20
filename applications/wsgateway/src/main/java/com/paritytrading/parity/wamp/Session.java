@@ -1,4 +1,4 @@
-package com.paritytrading.parity.fix;
+package com.paritytrading.parity.wamp;
 
 import static com.paritytrading.philadelphia.fix44.FIX44Enumerations.*;
 import static com.paritytrading.philadelphia.fix44.FIX44MsgTypes.*;

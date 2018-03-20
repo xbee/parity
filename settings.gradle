@@ -12,6 +12,7 @@ include ':parity-ticker'
 include ':parity-obm'
 include ':parity-wsreporter'
 include ':parity-wsticker'
+include ':parity-wsgateway'
 include ':parity-book-perf-test'
 include ':parity-match-perf-test'
 
@@ -28,5 +29,6 @@ project(':parity-ticker').projectDir = "$rootDir/applications/ticker" as File
 project(':parity-obm').projectDir = "$rootDir/applications/obm" as File
 project(':parity-wsreporter').projectDir = "$rootDir/applications/wsreporter" as File
 project(':parity-wsticker').projectDir = "$rootDir/applications/wsticker" as File
+project(':parity-wsgateway').projectDir = "$rootDir/applications/wsgateway" as File
 project(':parity-book-perf-test').projectDir = "$rootDir/tests/book-perf-test" as File
 project(':parity-match-perf-test').projectDir = "$rootDir/tests/match-perf-test" as File

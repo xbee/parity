@@ -1,4 +1,4 @@
-package com.paritytrading.parity.fix;
+package com.paritytrading.parity.wamp;
 
 import java.util.ArrayList;
 import java.util.List;

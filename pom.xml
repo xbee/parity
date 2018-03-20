@@ -62,6 +62,7 @@
     <module>applications/obm</module>
     <module>applications/wsreporter</module>
     <module>applications/wsticker</module>
+    <module>applications/wsgateway</module>
     <module>tests/book-perf-test</module>
     <module>tests/match-perf-test</module>
   </modules>

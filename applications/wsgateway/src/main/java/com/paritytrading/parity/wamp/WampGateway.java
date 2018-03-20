@@ -1,4 +1,4 @@
-package com.paritytrading.parity.fix;
+package com.paritytrading.parity.wamp;
 
 import static org.jvirtanen.util.Applications.*;
 
@@ -11,7 +11,7 @@ import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import org.jvirtanen.config.Configs;
 
-class FIXGateway {
+class WampGateway {
 
     public static void main(String[] args) {
         if (args.length != 1)

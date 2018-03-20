@@ -1,4 +1,4 @@
-package com.paritytrading.parity.fix;
+package com.paritytrading.parity.wamp;
 
 import com.paritytrading.nassau.soupbintcp.SoupBinTCPClient;
 import com.paritytrading.nassau.soupbintcp.SoupBinTCPClientStatusListener;

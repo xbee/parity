@@ -24,21 +24,23 @@ public class EnterCommand implements Command {
     }
 
     // arg 0: account | text
-    // arg 1: side | int
-    // arg 2: symbol | text
-    // arg 3: amount | number
-    // arg 4: price | number
+    // arg 1: clordid | text
+    // arg 2: side | int
+    // arg 3: amount | int
+    // arg 4: symbol | text
+    // arg 5: price | int
     @Override
     public void execute(OrderManager client, List<Object> arguments) throws CommandException, IOException {
         try {
-            if (arguments.size() != 5)
+            if (arguments.size() != 6)
                 throw new CommandException("Wrong size of args!");
 
 //            String account = (String) arguments.get(0);
-            long quantity   = (long) arguments.get(3);
-            long instrument = (long)arguments.get(2);
-            long price      = (long) arguments.get(4);
-            boolean isbuy   = (boolean) arguments.get(1);
+            int quantity   = (int) arguments.get(3);
+            int instrument = (int)arguments.get(4);
+            int price      = (int) arguments.get(5);
+            int s   = (int) arguments.get(2);
+            boolean isbuy = (s == 1) ? true : false;
 
             Instrument config = client.getInstruments().get(instrument);
             if (config == null)

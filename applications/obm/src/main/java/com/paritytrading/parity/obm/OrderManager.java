@@ -269,31 +269,41 @@ public class OrderManager implements Closeable {
         return wampclt.registerProcedure(RPC_ORDERS_CREATE).subscribe(new Action1<Request>() {
             @Override
             public void call(Request request) {
-                if (request.arguments() == null || request.arguments().size() != 5
-                        || !request.arguments().get(1).canConvertToInt()
-                        || !request.arguments().get(3).canConvertToLong()
-                        || !request.arguments().get(4).canConvertToLong())
+                if (request.arguments() == null || request.arguments().size() != 6
+                        || !request.arguments().get(2).canConvertToInt()
+                        || !request.arguments().get(3).canConvertToInt()
+                        || !request.arguments().get(4).canConvertToInt()
+                        || !request.arguments().get(5).canConvertToInt())
                 {
                     try {
+                        LOGGER.warning("Invalid WAMP RPC arguments!!");
                         request.replyError(new ApplicationError(ApplicationError.INVALID_PARAMETER));
                     } catch (ApplicationError e) {
                         e.printStackTrace();
                     }
                 }
                 else {
-                    String account = request.arguments().get(0).textValue();
-                    int side = request.arguments().get(1).asInt();
+                    String account = request.arguments().get(0).asText();
+                    String clordid = request.arguments().get(1).asText();
+                    int side = request.arguments().get(2).asInt();
                     boolean isbuy = (side == 0) ? false : true;
-                    String symbol = request.arguments().get(2).asText();
-                    long amount = request.arguments().get(3).asLong();
-                    long price = request.arguments().get(4).asLong();
+                    int amount = request.arguments().get(3).asInt();
+                    int symbol = request.arguments().get(4).asInt();
+                    int price = request.arguments().get(5).asInt();
 
                     ArrayList<Object> args = new ArrayList<Object>();
+                    // account id : string
                     args.add(0, request.arguments().get(0));
+                    // client order id : string
                     args.add(1, request.arguments().get(1));
+                    // side 1 or 0 : int
                     args.add(2, request.arguments().get(2));
+                    // amount : int
                     args.add(3, request.arguments().get(3));
+                    // symbol : int
                     args.add(4, request.arguments().get(4));
+                    // price : int
+                    args.add(5, request.arguments().get(5));
 
 //                    Command cmd = Commands.find("buy");
                     EnterCommand cmd = new EnterCommand(isbuy ? POE.BUY : POE.SELL);

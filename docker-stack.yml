@@ -112,6 +112,7 @@ services:
 #      NASSAU_SOUPBINTCP_GATEWAY_UPSTREAM_MULTICAST_PORT: '6000'
 #      NASSAU_SOUPBINTCP_GATEWAY_UPSTREAM_REQUEST_PORT: '6001'
   api:
+#    image: "golang"
     container_name: ${APP_NAME}_${API_HOST}
     build: ${API_CODE}
     restart: always
@@ -201,6 +202,7 @@ services:
 #      - /var/log/crossbar
   replicator:
     build: "./docker/replicator"
+#    image: "node:alpine"
     container_name: ${APP_NAME}_${REPLICATOR_HOST}
     depends_on:
       - engine

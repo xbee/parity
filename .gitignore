@@ -20,3 +20,4 @@ subscriber
 applications/reporter/build
 data/opt/crossbar/.crossbar
 docker/genesis
+applications/wsgateway/build

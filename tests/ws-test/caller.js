@@ -38,12 +38,12 @@ connection.onopen = function (session) {
    function createNewOrder(args) {
         console.log("create new order: ", args);
         // create a order number(guid)
-        account = args[0]
-        clordid = args[1]
-        isbuy = args[2]
-        amount = args[3]
-        symbol = args[4]
-        price = args[5]
+        account = args[0];
+        clordid = args[1];
+        isbuy = args[2];
+        amount = args[3];
+        symbol = args[4];
+        price = args[5];
 
         var guid = Guid.create();
         orderNumber = guid.value;
@@ -52,13 +52,13 @@ connection.onopen = function (session) {
    session.register(RPC_CREATEORDER_TEST, createNewOrder);
 
    // 4) call a remote procedure
-   session.call(RPC_CREATEORDER, [1001, 1, 'BTC-USD', 1, 8950]).then(
+   session.call(RPC_CREATEORDER, ['a1001', 'cs34', 1, 'BTC-USD', 946781, 895046]).then(
       function (res) {
          console.log("Result:", res);
       }
    );
 
-   session.call(RPC_CREATEORDER_TEST, [1005, 3, 'BTC-USD', 1, 8950]).then(
+   session.call(RPC_CREATEORDER_TEST, ['a1005', 'c23', 1, 'BTC-USD', 739641, 895027]).then(
          function (res) {
             console.log("Result:", res);
          }

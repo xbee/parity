@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
-class EnterCommand implements Command {
+public class EnterCommand implements Command {
 
     private POE.EnterOrder message;
 
@@ -35,10 +35,10 @@ class EnterCommand implements Command {
                 throw new CommandException("Wrong size of args!");
 
 //            String account = (String) arguments.get(0);
-            double quantity   = (double) arguments.get(3);
-            long   instrument = (long)arguments.get(2);
-            double price      = (double) arguments.get(4);
-            boolean isbuy  = (boolean) arguments.get(1);
+            long quantity   = (long) arguments.get(3);
+            long instrument = (long)arguments.get(2);
+            long price      = (long) arguments.get(4);
+            boolean isbuy   = (boolean) arguments.get(1);
 
             Instrument config = client.getInstruments().get(instrument);
             if (config == null)

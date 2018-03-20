@@ -65,27 +65,33 @@
       <groupId>org.eclipse.collections</groupId>
       <artifactId>eclipse-collections</artifactId>
     </dependency>
-    <dependency>
-      <groupId>io.crossbar.autobahn</groupId>
-      <artifactId>autobahn-java</artifactId>
-        <version>17.10.5</version>
-    </dependency>
+    <!--<dependency>-->
+      <!--<groupId>io.crossbar.autobahn</groupId>-->
+      <!--<artifactId>autobahn-java</artifactId>-->
+        <!--<version>17.10.5</version>-->
+    <!--</dependency>-->
+
     <!--<dependency>-->
       <!--<groupId>io.crossbar.autobahn</groupId>-->
       <!--<artifactId>autobahn-netty</artifactId>-->
       <!--<scope>system</scope>-->
       <!--<systemPath>${project.parent.basedir}/thirdparty/autobahn-java-17.10.5.jar</systemPath>-->
     <!--</dependency>-->
-    <!--<dependency>-->
-      <!--<groupId>ws.wamp.jawampa</groupId>-->
-      <!--<artifactId>jawampa-core</artifactId>-->
-      <!--<version>0.5.0</version>-->
-    <!--</dependency>-->
-    <!--<dependency>-->
-      <!--<groupId>ws.wamp.jawampa</groupId>-->
-      <!--<artifactId>jawampa-netty</artifactId>-->
-      <!--<version>0.5.0</version>-->
-    <!--</dependency>-->
+    <dependency>
+      <groupId>ws.wamp.jawampa</groupId>
+      <artifactId>jawampa-core</artifactId>
+      <version>0.5.0</version>
+    </dependency>
+    <dependency>
+      <groupId>ws.wamp.jawampa</groupId>
+      <artifactId>jawampa-netty</artifactId>
+      <version>0.5.0</version>
+    </dependency>
+    <dependency>
+      <groupId>com.lmax</groupId>
+      <artifactId>disruptor</artifactId>
+      <version>3.3.0</version>
+    </dependency>
   </dependencies>
 
   <build>

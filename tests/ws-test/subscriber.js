@@ -40,7 +40,7 @@ connection.onopen = function (session) {
         orderNumber = guid.value;
         return {"status": "ok", "data": {"on": orderNumber, "ts": Date.now()}}
    }
-   session.register(FUNC_CREATEORDER, createNewOrder);
+//   session.register(FUNC_CREATEORDER, createNewOrder);
 
    // 4) call a remote procedure
    session.call('com.myapp.add2', [2, 3]).then(

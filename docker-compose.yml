@@ -1,13 +1,19 @@
 version: '3.3'
+
+networks:
+  core-net:
+  db-net:
+  web-net:
+
 services:
   engine:
     image: 'openjdk:8-jre-alpine'
     container_name: ${APP_NAME}_${ENGINE_HOST}
-    # TODO: need to remove in production
-    ports:
-      - '4000:4000'
     volumes:
       - "./data/opt/parity:/opt/parity"
+    # TODO: need to remove in production
+    ports:
+      - "4000:4000"
     expose:
       - "4000/tcp"
       - "5001/udp"
@@ -72,13 +78,17 @@ services:
       networks:
         - web-net
         - core-net
-  client:
+  orderentry:
+    container_name: ${APP_NAME}_${OE_HOST}
     image: 'openjdk:8-jre-alpine'
+    ports:
+      - "6800:6800"
+    expose:
+      - "6800"
     volumes:
       - "./data/opt/parity:/opt/parity"
     depends_on:
       - engine
-      - crossbar
     networks:
       - core-net
       - web-net
@@ -86,7 +96,7 @@ services:
       - /usr/bin/java
       - -jar
       - /opt/parity/parity-obm.jar
-      - /opt/parity/parity-client.conf
+      - /opt/parity/orderentry.conf
 #  market-data-gateway:
 #    build: './docker/nassau-soupbintcp-gateway'
 #    ports:
@@ -123,15 +133,18 @@ services:
       - '8081:80'
       - '8020:8020'
       - '8030:8030'
+      - '8010:8010'
 #      - '8443:443'
     expose:
       - '80'
+      - '8010'
       - '8020'
       - '8030'
     networks:
       - web-net
     depends_on:
       - crossbar
+      - orderentry
       - api
     volumes:
 #      - "./data/etc/nginx/api_proxy.conf:/etc/nginx/conf.d/api_proxy.conf"
@@ -197,8 +210,5 @@ services:
 #    entrypoint:
 #      - /bin/sh
 
-networks:
-  core-net:
-  db-net:
-  web-net:
+
 

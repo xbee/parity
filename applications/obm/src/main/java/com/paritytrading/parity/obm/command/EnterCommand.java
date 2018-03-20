@@ -8,9 +8,11 @@ import java.io.IOException;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
+import java.util.logging.Logger;
 
 public class EnterCommand implements Command {
 
+    private static final Logger LOGGER = Logger.getLogger(OrderManager.class.getName());
     private POE.EnterOrder message;
 
     public EnterCommand(byte side) {
@@ -32,8 +34,10 @@ public class EnterCommand implements Command {
     @Override
     public void execute(OrderManager client, List<Object> arguments) throws CommandException, IOException {
         try {
-            if (arguments.size() != 6)
+            if (arguments.size() != 6) {
+                LOGGER.warning("Wrong size of args!");
                 throw new CommandException("Wrong size of args!");
+            }
 
 //            String account = (String) arguments.get(0);
             int quantity   = (int) arguments.get(3);
@@ -43,11 +47,14 @@ public class EnterCommand implements Command {
             boolean isbuy = (s == 1) ? true : false;
 
             Instrument config = client.getInstruments().get(instrument);
-            if (config == null)
+            if (config == null) {
+                LOGGER.warning("Wrong instrument id!");
                 throw new CommandException("Wrong instrument id!");
+            }
 
             execute(client, isbuy, Math.round(quantity * config.getSizeFactor()), instrument, Math.round(price * config.getPriceFactor()));
         } catch (NoSuchElementException e) {
+            LOGGER.warning("No such element!");
             throw new CommandException();
         }
     }

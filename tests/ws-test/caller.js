@@ -47,20 +47,20 @@ connection.onopen = function (session) {
 
         var guid = Guid.create();
         orderNumber = guid.value;
-        return {"status": "ok", "data": {"oid": orderNumber, "ts": Date.now()}}
+        return {"state": "order_received", "data": {"oid": orderNumber, "ts": Date.now()}}
    }
-   session.register(RPC_CREATEORDER_TEST, createNewOrder);
+//   session.register(RPC_CREATEORDER, createNewOrder);
 
    // 4) call a remote procedure
-   session.call(RPC_CREATEORDER, ['a1001', 'cs34', 1, 'BTC-USD', 946781, 895046]).then(
+   session.call(RPC_CREATEORDER, ['a1001', 'cs34', 1, 946781, 1, 895046]).then(
       function (res) {
          console.log("Result:", res);
       }
    );
 
-   session.call(RPC_CREATEORDER_TEST, ['a1005', 'c23', 1, 'BTC-USD', 739641, 895027]).then(
+   session.call(RPC_CREATEORDER_TEST, ['a1005', 'c23', 1, 739641, 1, 895027]).then(
          function (res) {
-            console.log("Result:", res);
+            console.log("Result(Test):", res);
          }
       );
 };

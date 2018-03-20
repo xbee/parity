@@ -212,7 +212,13 @@ public class OrderManager implements Closeable {
 
                     if (t1 instanceof WampClient.ConnectedState) {
                         // Register a procedure
-                        addProcSubscription = regCreateOrder(self);
+                        addProcSubscription = regCreateOrder();
+                        if (addProcSubscription.isUnsubscribed()) {
+                            System.out.println("Register a RPC successed! - " + "CreateOrder");
+                        } else {
+                            System.out.println("Register a RPC failed! - " + "CreateOrder");
+                        }
+
                     }
                 }
             }, new Action1<Throwable>() {
@@ -265,7 +271,7 @@ public class OrderManager implements Closeable {
 
     }
 
-    private static Subscription regCreateOrder(OrderManager om) {
+    private static Subscription regCreateOrder() {
         return wampclt.registerProcedure(RPC_ORDERS_CREATE).subscribe(new Action1<Request>() {
             @Override
             public void call(Request request) {
@@ -279,10 +285,10 @@ public class OrderManager implements Closeable {
                         LOGGER.warning("Invalid WAMP RPC arguments!!");
                         request.replyError(new ApplicationError(ApplicationError.INVALID_PARAMETER));
                     } catch (ApplicationError e) {
+                        LOGGER.warning(e.toString());
                         e.printStackTrace();
                     }
-                }
-                else {
+                } else {
                     String account = request.arguments().get(0).asText();
                     String clordid = request.arguments().get(1).asText();
                     int side = request.arguments().get(2).asInt();
@@ -311,8 +317,10 @@ public class OrderManager implements Closeable {
                         cmd.execute(self, args);
                     } catch (CommandException e) {
                         e.printStackTrace();
+                        LOGGER.warning(e.toString());
                     } catch (IOException e) {
                         e.printStackTrace();
+                        LOGGER.warning(e.toString());
                     }
                     // create a entercommand and exec it
 //                    request.reply(a + b);

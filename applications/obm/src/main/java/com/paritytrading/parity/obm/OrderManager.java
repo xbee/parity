@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
@@ -38,7 +39,6 @@ public class OrderManager implements Closeable {
     public static final Locale LOCALE = Locale.US;
     private static final String RPC_ORDERS_CREATE = "tridex.dev.orders.create";
     private static final String TOPIC_COUNTER = "order.oncounter";
-    private static final URI serverUri = URI.create("ws://0.0.0.0:6800/poe/");
 //    private static WampClient wampclt;
     private static WampClient wampclt;
     private static WampRouterBuilder wampRouterBuilder;
@@ -165,10 +165,10 @@ public class OrderManager implements Closeable {
         return scanner;
     }
 
-    private static void serverRouter() {
+    private static void serverRouter(String uri, String realm) {
         wampRouterBuilder = new WampRouterBuilder();
         try {
-            wampRouterBuilder.addRealm("realm1");
+            wampRouterBuilder.addRealm(realm);
             wampRouter = wampRouterBuilder.build();
         } catch (ApplicationError e1) {
             e1.printStackTrace();
@@ -176,10 +176,16 @@ public class OrderManager implements Closeable {
         }
 
         try {
-            wampRouterServer = new SimpleWampWebsocketListener(wampRouter, serverUri, null);
-            wampRouterServer.start();
-        } catch (ApplicationError applicationError) {
-            applicationError.printStackTrace();
+            URI suri = new URI(uri);
+
+            try {
+                wampRouterServer = new SimpleWampWebsocketListener(wampRouter, suri, null);
+                wampRouterServer.start();
+            } catch (ApplicationError applicationError) {
+                applicationError.printStackTrace();
+            }
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
         }
 
     }
@@ -253,7 +259,7 @@ public class OrderManager implements Closeable {
 
         self = OrderManager.open(new InetSocketAddress(orderEntryAddress, orderEntryPort),
                 orderEntryUsername, orderEntryPassword, instruments);
-        serverRouter();
+        serverRouter(routerUrl, routerRealm);
         // init WAMP Client: connect to WAMP router
         initWampClient(routerUrl, routerRealm);
 

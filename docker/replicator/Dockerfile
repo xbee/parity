@@ -1,4 +1,4 @@
-FROM node:alpine
+FROM node:latest
 
 RUN mkdir -p /opt/replicator
 WORKDIR /opt/replicator

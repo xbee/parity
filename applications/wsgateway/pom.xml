@@ -57,6 +57,11 @@
       <groupId>org.jvirtanen.util</groupId>
       <artifactId>util-extras</artifactId>
     </dependency>
+      <dependency>
+          <groupId>org.statefulj</groupId>
+          <artifactId>statefulj-fsm</artifactId>
+          <version>3.0</version>
+      </dependency>
   </dependencies>
 
   <build>

@@ -15,7 +15,7 @@ class WampGateway {
 
     public static void main(String[] args) {
         if (args.length != 1)
-            usage("parity-fix <configuration-file>");
+            usage("parity-ws <configuration-file>");
 
         try {
             main(config(args[0]));

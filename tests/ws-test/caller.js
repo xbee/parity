@@ -39,10 +39,11 @@ connection.onopen = function (session) {
         console.log("create new order: ", args);
         // create a order number(guid)
         account = args[0]
-        isbuy = args[1]
-        symbol = args[2]
+        clordid = args[1]
+        isbuy = args[2]
         amount = args[3]
-        price = args[4]
+        symbol = args[4]
+        price = args[5]
 
         var guid = Guid.create();
         orderNumber = guid.value;

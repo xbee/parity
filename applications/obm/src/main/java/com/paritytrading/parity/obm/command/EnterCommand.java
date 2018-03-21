@@ -40,9 +40,9 @@ public class EnterCommand implements Command {
             }
 
 //            String account = (String) arguments.get(0);
-            int quantity   = (int) arguments.get(3);
-            int instrument = (int)arguments.get(4);
-            int price      = (int) arguments.get(5);
+            long quantity   = (long) arguments.get(3);
+            long instrument = (long)arguments.get(4);
+            long price      = (long) arguments.get(5);
             int s   = (int) arguments.get(2);
             boolean isbuy = (s == 1) ? true : false;
 

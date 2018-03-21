@@ -7,7 +7,7 @@ try {
 }
 
 var Guid = require("guid");
-var connection = new autobahn.Connection({url: 'ws://localhost:8010/poe/', realm: 'realm1'});
+var connection = new autobahn.Connection({url: 'ws://localhost:6800/poe/', realm: 'realm1'});
 
 var RPC_CREATEORDER = "tridex.dev.orders.create";
 var RPC_CREATEORDER_TEST = "tridex.test.orders.create";
@@ -52,17 +52,22 @@ connection.onopen = function (session) {
 //   session.register(RPC_CREATEORDER, createNewOrder);
 
    // 4) call a remote procedure
-   session.call(RPC_CREATEORDER, ['a1001', 'cs34', 1, 946781, 1, 895046]).then(
+   session.call(RPC_CREATEORDER, ['a1001', 'cs34', 1, 946781, 'BTC-USD', 895046]).then(
       function (res) {
          console.log("Result:", res);
       }
    );
 
-   session.call(RPC_CREATEORDER_TEST, ['a1005', 'c23', 1, 739641, 1, 895027]).then(
+   session.call(RPC_CREATEORDER_TEST, ['a1005', 'c23', 1, 739641, 'BTC-USD', 895027]).then(
          function (res) {
             console.log("Result(Test):", res);
          }
       );
+   session.call('com.myapp.add', [4, 6]).then(
+            function (res) {
+               console.log("Result(add):", res);
+            }
+         );
 };
 
 connection.open();

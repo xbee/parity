@@ -122,6 +122,7 @@ services:
     depends_on:
       - mongo
       - crossbar
+      - orderentry
     networks:
       - db-net
       - web-net

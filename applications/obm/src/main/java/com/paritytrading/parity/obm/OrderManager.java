@@ -3,6 +3,7 @@ package com.paritytrading.parity.obm;
 import static java.lang.Thread.sleep;
 import static org.jvirtanen.util.Applications.*;
 
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.paritytrading.foundation.ASCII;
 import com.paritytrading.nassau.soupbintcp.SoupBinTCP;
 import com.paritytrading.parity.net.poe.POE;
@@ -24,6 +25,8 @@ import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
+import io.netty.handler.codec.json.JsonObjectDecoder;
+import org.json.simple.JSONObject;
 import org.jvirtanen.config.Configs;
 import rx.Subscription;
 import rx.functions.Action0;
@@ -204,6 +207,7 @@ public class OrderManager implements Closeable {
             // Create a client through the builder. This will not immediatly start
             // a connection attempt
             wampclt = builder.build();
+            wampclt.open();
 
             wampclt.statusChanged().subscribe(new Action1<WampClient.State>() {
                 @Override
@@ -213,27 +217,21 @@ public class OrderManager implements Closeable {
                     if (t1 instanceof WampClient.ConnectedState) {
                         // Register a procedure
                         addProcSubscription = regCreateOrder();
-                        if (addProcSubscription.isUnsubscribed()) {
-                            System.out.println("Register a RPC successed! - " + "CreateOrder");
-                        } else {
-                            System.out.println("Register a RPC failed! - " + "CreateOrder");
-                        }
-
                     }
                 }
             }, new Action1<Throwable>() {
                 @Override
                 public void call(Throwable t) {
-                    System.out.println("WSTicker connection ended with error " + t);
+                    System.out.println("Obm connection ended with error " + t);
                 }
             }, new Action0() {
                 @Override
                 public void call() {
-                    System.out.println("WSTicker connection ended normally");
+                    System.out.println("Obm connection ended normally");
                 }
             });
 
-            wampclt.open();
+
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -277,12 +275,11 @@ public class OrderManager implements Closeable {
             public void call(Request request) {
                 if (request.arguments() == null || request.arguments().size() != 6
                         || !request.arguments().get(2).canConvertToInt()
-                        || !request.arguments().get(3).canConvertToInt()
-                        || !request.arguments().get(4).canConvertToInt()
-                        || !request.arguments().get(5).canConvertToInt())
+                        || !request.arguments().get(3).canConvertToLong()
+                        || !request.arguments().get(5).canConvertToLong())
                 {
                     try {
-                        LOGGER.warning("Invalid WAMP RPC arguments!!");
+                        LOGGER.warning("Invalid WAMP RPC arguments!! args: " + request.arguments().toString());
                         request.replyError(new ApplicationError(ApplicationError.INVALID_PARAMETER));
                     } catch (ApplicationError e) {
                         LOGGER.warning(e.toString());
@@ -293,23 +290,23 @@ public class OrderManager implements Closeable {
                     String clordid = request.arguments().get(1).asText();
                     int side = request.arguments().get(2).asInt();
                     boolean isbuy = (side == 0) ? false : true;
-                    int amount = request.arguments().get(3).asInt();
-                    int symbol = request.arguments().get(4).asInt();
-                    int price = request.arguments().get(5).asInt();
+                    long amount = request.arguments().get(3).asLong();
+                    String symbol = request.arguments().get(4).asText();
+                    long price = request.arguments().get(5).asLong();
 
                     ArrayList<Object> args = new ArrayList<Object>();
                     // account id : string
-                    args.add(0, request.arguments().get(0));
+                    args.add(0, account);
                     // client order id : string
-                    args.add(1, request.arguments().get(1));
+                    args.add(1, clordid);
                     // side 1 or 0 : int
-                    args.add(2, request.arguments().get(2));
+                    args.add(2, side);
                     // amount : int
-                    args.add(3, request.arguments().get(3));
+                    args.add(3, amount);
                     // symbol : int
-                    args.add(4, request.arguments().get(4));
+                    args.add(4, ASCII.packLong(symbol));
                     // price : int
-                    args.add(5, request.arguments().get(5));
+                    args.add(5, price);
 
 //                    Command cmd = Commands.find("buy");
                     EnterCommand cmd = new EnterCommand(isbuy ? POE.BUY : POE.SELL);
@@ -323,8 +320,23 @@ public class OrderManager implements Closeable {
                         LOGGER.warning(e.toString());
                     }
                     // create a entercommand and exec it
-//                    request.reply(a + b);
+                    JSONObject obj = new JSONObject();
+                    obj.put("state", "order_received");
+                    obj.put("account", account);
+                    obj.put("clordid", clordid);
+
+                    request.reply(obj.toJSONString());
                 }
+            }
+        }, new Action1<Throwable>() {
+            @Override
+            public void call(Throwable t) {
+                System.out.println("CreateOrder register failed with error " + t);
+            }
+        }, new Action0() {
+            @Override
+            public void call() {
+                System.out.println("CreateOrder register ended normally");
             }
         });
     }

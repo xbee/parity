@@ -1,4 +1,4 @@
-version: '3.3'
+version: '3'
 
 networks:
   core-net:
@@ -8,7 +8,7 @@ networks:
 services:
   engine:
     image: 'openjdk:8-jre-alpine'
-    container_name: ${APP_NAME}_${ENGINE_HOST}
+#    container_name: ${APP_NAME}-${ENGINE_HOST}
     volumes:
       - "./data/opt/parity:/opt/parity"
     # TODO: need to remove in production
@@ -29,7 +29,7 @@ services:
       - core-net
   fix:
     image: 'openjdk:8-jre-alpine'
-    container_name: ${APP_NAME}_${FIX_HOST}
+#    container_name: ${APP_NAME}-${FIX_HOST}
     ports:
       - "4010:4010"
     expose:
@@ -47,7 +47,7 @@ services:
       - core-net
   wsreporter:
     image: 'openjdk:8-jre-alpine'
-    container_name: ${APP_NAME}_${REPORTER_HOST}
+#    container_name: ${APP_NAME}-${REPORTER_HOST}
     volumes:
       - "./data/opt/parity:/opt/parity"
     entrypoint:
@@ -64,7 +64,7 @@ services:
       - core-net
   ticker:
       image: 'openjdk:8-jre-alpine'
-      container_name: ${APP_NAME}_${TICKER_HOST}
+#      container_name: ${APP_NAME}-${TICKER_HOST}
       volumes:
         - "./data/opt/parity:/opt/parity"
       entrypoint:
@@ -79,7 +79,7 @@ services:
         - web-net
         - core-net
   orderentry:
-    container_name: ${APP_NAME}_${OE_HOST}
+#    container_name: ${APP_NAME}-${OE_HOST}
     image: 'openjdk:8-jre-alpine'
     ports:
       - "6800:6800"
@@ -112,8 +112,9 @@ services:
 #      NASSAU_SOUPBINTCP_GATEWAY_UPSTREAM_MULTICAST_PORT: '6000'
 #      NASSAU_SOUPBINTCP_GATEWAY_UPSTREAM_REQUEST_PORT: '6001'
   api:
-    container_name: ${APP_NAME}_${API_HOST}
-    build: ${API_CODE}
+    image: "tridex/api"
+#    container_name: ${APP_NAME}-${API_HOST}
+#    build: ${API_CODE}
     restart: always
     ports:
       - '3500:3000'
@@ -129,7 +130,7 @@ services:
   proxy:
 #    image: 'jwilder/nginx-proxy'
     image: 'itwars/nginx-http2'
-    container_name: ${APP_NAME}_${PROXY_HOST}
+#    container_name: ${APP_NAME}-${PROXY_HOST}
     ports:
       - '8081:80'
       - '8020:8020'
@@ -155,7 +156,7 @@ services:
       - "./docker/nginx/www/:/usr/share/nginx/html/"
   mongo:
     image: 'mongo:latest'
-    container_name: ${APP_NAME}_${MONGO_HOST}
+#    container_name: ${APP_NAME}-${MONGO_HOST}
     restart: always
     # just need in developing
     # in production it should be remove
@@ -184,7 +185,7 @@ services:
 #      - "./data/db/mysql:/var/lib/mysql"
   crossbar:
     image: 'crossbario/crossbar'
-    container_name: ${APP_NAME}_${CROSSBAR_HOST}
+#    container_name: ${APP_NAME}-${CROSSBAR_HOST}
     restart: always
     expose:
       - '8080'
@@ -201,8 +202,9 @@ services:
 #      - --logdir
 #      - /var/log/crossbar
   replicator:
-    build: "./docker/replicator"
-    container_name: ${APP_NAME}_${REPLICATOR_HOST}
+#    build: "./docker/replicator"
+    image: "tridex/replicator"
+#    container_name: ${APP_NAME}-${REPLICATOR_HOST}
     depends_on:
       - engine
 #      - ticker

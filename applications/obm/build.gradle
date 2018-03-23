@@ -1,4 +1,29 @@
 
+import java.nio.file.Files
+import java.nio.file.Paths
+import java.nio.file.StandardCopyOption
+
+def defaultPathBase = new File( "." ).getCanonicalPath()
+//def base = Paths.get(".").getRoot()
+def sourceFile = new File("./target/parity-obm-0.7.1-SNAPSHOT.jar")
+def targetFile = new File(defaultPathBase, "../../data/opt/parity/parity-obm.jar")
+
+buildscript {
+  repositories {
+    jcenter()
+  }
+  dependencies {
+    classpath 'com.github.jengelman.gradle.plugins:shadow:2.0.2'
+  }
+}
+
+
+apply plugin: 'java'
+apply plugin: 'application'
+apply plugin: 'com.github.johnrengelman.plugin-shadow'
+
+mainClassName = 'com.paritytrading.parity.obm.OrderManager'
+
 description = 'Parity OrderBook Manager'
 dependencies {
   compile project(':parity-net')
@@ -11,9 +36,44 @@ dependencies {
     compile group: 'org.jvirtanen.util', name: 'util-extras', version:'0.2.0'
     compile group: 'org.eclipse.collections', name: 'eclipse-collections-api', version:'8.2.0'
     compile group: 'org.eclipse.collections', name: 'eclipse-collections', version:'8.2.0'
-//    compile group: 'ws.wamp.jawampa', name: 'jawampa-core', version:'0.5.0'
-//    compile group: 'ws.wamp.jawampa', name: 'jawampa-netty', version:'0.5.0'
+    compile group: 'ws.wamp.jawampa', name: 'jawampa-core', version:'0.5.0'
+    compile group: 'ws.wamp.jawampa', name: 'jawampa-netty', version:'0.5.0'
+    compile group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1.1'
 //    compile files('$rootProject.projectDir/thirdparty/autobahn-java-17.10.5.jar')
-    implementation 'io.crossbar.autobahn:autobahn-java:17.10.5'
+//    implementation 'io.crossbar.autobahn:autobahn-java:17.10.5'
     testCompile group: 'junit', name: 'junit', version:'4.12'
 }
+
+task copyJar() {
+  doLast {
+//    Files.copy(sourceFile.toPath(), targetFile.toPath(), StandardCopyOption.REPLACE_EXISTING)
+    copy {
+      from "$sourceFile"
+      into "$targetFile"
+    }
+  }
+}
+
+apply from: 'other.gradle'
+
+
+shadowJar {
+    exclude 'META-INF/ECLIPSE_.RSA', 'META-INF/ECLIPSE_.SF', 'META-INF/*.RSA', 'META-INF/*.DSA', 'META-INF/*.SF'
+}
+
+//build.doFirst {
+//  println("Hello from before build...")
+//    println("base: $base")
+////  tasks.hello.execute()
+//  println("from: $sourceFile")
+//  println("build: $buildDir")
+//  println("project: $projectDir")
+//  println("target: $targetFile")
+//}
+
+//build.doLast {
+//  tasks.hello.execute()
+//  println("Deploy jar to "+"$targetDir")
+//  tasks.copyJar.execute()
+//}
+

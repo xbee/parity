@@ -39,7 +39,7 @@ public class EnterCommand implements Command {
                 throw new CommandException("Wrong size of args!");
             }
 
-//            String account = (String) arguments.get(0);
+            String orderid = (String) arguments.get(1);
             long quantity   = (long) arguments.get(3);
             long instrument = (long)arguments.get(4);
             long price      = (long) arguments.get(5);
@@ -52,18 +52,18 @@ public class EnterCommand implements Command {
                 throw new CommandException("Wrong instrument id!");
             }
 
-            execute(client, isbuy, Math.round(quantity * config.getSizeFactor()), instrument, Math.round(price * config.getPriceFactor()));
+            execute(client, orderid, isbuy, Math.round(quantity * config.getSizeFactor()), instrument, Math.round(price * config.getPriceFactor()));
         } catch (NoSuchElementException e) {
             LOGGER.warning("No such element!");
             throw new CommandException();
         }
     }
 
-    private void execute(OrderManager client, boolean isbuy, long quantity, long instrument, long price) throws IOException {
+    private void execute(OrderManager client, String ordid, boolean isbuy, long quantity, long instrument, long price) throws IOException {
         // generate order id
-        String orderId = client.getOrderIdGenerator().next();
+//        String orderId = client.getOrderIdGenerator().next();
 
-        ASCII.putLeft(message.orderId, orderId);
+        ASCII.putLeft(message.orderId, ordid);
         message.quantity   = quantity;
         message.instrument = instrument;
         message.price      = price;
@@ -71,7 +71,7 @@ public class EnterCommand implements Command {
 
         client.getOrderEntry().send(message);
 
-        client.printf("\nOrder ID\n----------------\n%s\n\n", orderId);
+        client.printf("\nOrder ID\n----------------\n%s\n\n", ordid);
     }
 
     @Override

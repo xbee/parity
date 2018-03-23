@@ -1,0 +1,39 @@
+
+task hello {
+    doLast {
+        tasks.setWhoamiProperty.execute()
+        tasks.setHostnameProperty.execute()
+//        tasks.printBuildInfo.execute()
+    }
+}
+
+task setWhoamiProperty {
+    doLast {
+        def stdout = new ByteArrayOutputStream()
+        exec{
+            commandLine "whoami"
+            standardOutput = stdout;
+        }
+        println stdout.toString();
+
+        //extension method setWhoamiProperty.output() can be used to obtain the output:
+//        ext.whoami = {
+//            return stdout.toString()
+//        }
+    }
+}
+
+task setHostnameProperty {
+    doLast {
+        def stdout = new ByteArrayOutputStream()
+        exec{
+            commandLine "hostname"
+            standardOutput = stdout;
+        }
+        println stdout.toString();
+
+//        ext.hostname = {
+//            return stdout.toString()
+//        }
+    }
+}

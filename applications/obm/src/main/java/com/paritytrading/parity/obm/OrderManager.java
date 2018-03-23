@@ -9,6 +9,7 @@ import com.paritytrading.nassau.soupbintcp.SoupBinTCP;
 import com.paritytrading.parity.net.poe.POE;
 import com.paritytrading.parity.obm.command.CommandException;
 import com.paritytrading.parity.obm.command.EnterCommand;
+import com.paritytrading.parity.obm.command.CancelCommand;
 import com.paritytrading.parity.obm.event.POEListener;
 import com.paritytrading.parity.util.Instruments;
 import com.paritytrading.parity.util.OrderIDGenerator;
@@ -21,6 +22,10 @@ import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
@@ -41,6 +46,7 @@ public class OrderManager implements Closeable {
     private static final Logger LOGGER = Logger.getLogger(OrderManager.class.getName());
     public static final Locale LOCALE = Locale.US;
     private static final String RPC_ORDERS_CREATE = "tridex.dev.orders.create";
+    private static final String RPC_ORDERS_CANCEL = "tridex.dev.orders.cancel";
     private static final String TOPIC_COUNTER = "order.oncounter";
 //    private static WampClient wampclt;
     private static WampClient wampclt;
@@ -231,8 +237,6 @@ public class OrderManager implements Closeable {
                 }
             });
 
-
-
         } catch (Exception e) {
             e.printStackTrace();
             return;
@@ -286,6 +290,9 @@ public class OrderManager implements Closeable {
                         e.printStackTrace();
                     }
                 } else {
+                    // generate order id
+                    String orderId = self.getOrderIdGenerator().next();
+
                     String account = request.arguments().get(0).asText();
                     String clordid = request.arguments().get(1).asText();
                     int side = request.arguments().get(2).asInt();
@@ -297,8 +304,8 @@ public class OrderManager implements Closeable {
                     ArrayList<Object> args = new ArrayList<Object>();
                     // account id : string
                     args.add(0, account);
-                    // client order id : string
-                    args.add(1, clordid);
+                    // order id : string
+                    args.add(1, orderId);
                     // side 1 or 0 : int
                     args.add(2, side);
                     // amount : int
@@ -323,7 +330,66 @@ public class OrderManager implements Closeable {
                     JSONObject obj = new JSONObject();
                     obj.put("state", "order_received");
                     obj.put("account", account);
-                    obj.put("clordid", clordid);
+                    obj.put("orderid", orderId);
+//                    Instant instant = Instant.now();
+                    obj.put("time", LocalDateTime.now());
+
+                    request.reply(obj.toJSONString());
+                }
+            }
+        }, new Action1<Throwable>() {
+            @Override
+            public void call(Throwable t) {
+                System.out.println("CreateOrder register failed with error " + t);
+            }
+        }, new Action0() {
+            @Override
+            public void call() {
+                System.out.println("CreateOrder register ended normally");
+            }
+        });
+    }
+
+    private static Subscription regCancelOrder() {
+        return wampclt.registerProcedure(RPC_ORDERS_CREATE).subscribe(new Action1<Request>() {
+            @Override
+            public void call(Request request) {
+                if (request.arguments() == null || request.arguments().size() != 2
+                        || !request.arguments().get(1).canConvertToLong())
+                {
+                    try {
+                        LOGGER.warning("Invalid WAMP RPC arguments!! args: " + request.arguments().toString());
+                        request.replyError(new ApplicationError(ApplicationError.INVALID_PARAMETER));
+                    } catch (ApplicationError e) {
+                        LOGGER.warning(e.toString());
+                        e.printStackTrace();
+                    }
+                } else {
+                    String ordid = request.arguments().get(0).asText();
+                    long amount = request.arguments().get(3).asLong();
+
+                    ArrayList<Object> args = new ArrayList<Object>();
+                    // account id : string
+                    args.add(0, ordid);
+                    // client order id : string
+                    args.add(1, amount);
+
+//                    Command cmd = Commands.find("buy");
+                    CancelCommand cmd = new CancelCommand();
+                    try {
+                        cmd.execute(self, args);
+                    } catch (CommandException e) {
+                        e.printStackTrace();
+                        LOGGER.warning(e.toString());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        LOGGER.warning(e.toString());
+                    }
+                    // create a entercommand and exec it
+                    JSONObject obj = new JSONObject();
+                    obj.put("state", "order_cancel_received");
+                    obj.put("ordid", ordid);
+                    obj.put("time", LocalDateTime.now());
 
                     request.reply(obj.toJSONString());
                 }

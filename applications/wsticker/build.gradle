@@ -1,4 +1,19 @@
 
+buildscript {
+  repositories {
+    jcenter()
+  }
+  dependencies {
+    classpath 'com.github.jengelman.gradle.plugins:shadow:2.0.2'
+  }
+}
+
+apply plugin: 'java'
+apply plugin: 'application'
+apply plugin: 'com.github.johnrengelman.plugin-shadow'
+
+mainClassName = 'com.paritytrading.parity.obm.OrderManager'
+
 description = 'Parity WSTicker'
 dependencies {
   compile project(':parity-book')
@@ -15,4 +30,8 @@ dependencies {
     compile group: 'ws.wamp.jawampa', name: 'jawampa-core', version:'0.5.0'
     compile group: 'ws.wamp.jawampa', name: 'jawampa-netty', version:'0.5.0'
     compile group: 'com.googlecode.json-simple', name: 'json-simple', version:'1.1.1'
+}
+
+shadowJar {
+  exclude 'META-INF/ECLIPSE_.RSA', 'META-INF/ECLIPSE_.SF', 'META-INF/*.RSA', 'META-INF/*.DSA', 'META-INF/*.SF'
 }

@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
-class CancelCommand implements Command {
+public class CancelCommand implements Command {
 
     private POE.CancelOrder message;
 
@@ -33,6 +33,13 @@ class CancelCommand implements Command {
     private void execute(OrderManager client, String orderId) throws IOException {
         ASCII.putLeft(message.orderId, orderId);
         message.quantity = 0;
+
+        client.getOrderEntry().send(message);
+    }
+
+    private void execute(OrderManager client, String orderId, long qty) throws IOException {
+        ASCII.putLeft(message.orderId, orderId);
+        message.quantity = qty;
 
         client.getOrderEntry().send(message);
     }

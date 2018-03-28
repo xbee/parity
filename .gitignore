@@ -22,3 +22,4 @@ data/opt/crossbar/.crossbar
 docker/genesis
 applications/wsgateway/build
 .idea
+k8s

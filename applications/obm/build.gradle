@@ -5,7 +5,7 @@ import java.nio.file.StandardCopyOption
 
 def defaultPathBase = new File( "." ).getCanonicalPath()
 //def base = Paths.get(".").getRoot()
-def sourceFile = new File("./target/parity-obm-0.7.1-SNAPSHOT.jar")
+def sourceFile = new File("./target/parity-obm-0.7.1-SNAPSHOT-all.jar")
 def targetFile = new File(defaultPathBase, "../../data/opt/parity/parity-obm.jar")
 
 buildscript {
@@ -16,7 +16,6 @@ buildscript {
     classpath 'com.github.jengelman.gradle.plugins:shadow:2.0.2'
   }
 }
-
 
 apply plugin: 'java'
 apply plugin: 'application'
@@ -58,6 +57,7 @@ apply from: 'other.gradle'
 
 
 shadowJar {
+//  minimizeJar = true
     exclude 'META-INF/ECLIPSE_.RSA', 'META-INF/ECLIPSE_.SF', 'META-INF/*.RSA', 'META-INF/*.DSA', 'META-INF/*.SF'
 }
 

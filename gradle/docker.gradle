@@ -17,7 +17,11 @@ import com.bmuschko.gradle.docker.tasks.image.DockerBuildImage
 
 // use task classes
 task buildApiImage(type: DockerBuildImage) {
-
     inputDir = new File("/Users/michael/gopath/src/tridex/restapi/")
     tag = 'tridex/api:v1'
+}
+
+task buildReplicatorImage(type: DockerBuildImage) {
+    inputDir = new File("/Users/michael/workspace/tridex/docker/replicator")
+    tag = 'tridex/replicator:v1'
 }

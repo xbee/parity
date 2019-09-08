@@ -7,7 +7,7 @@ try {
 }
 
 var Guid = require("guid");
-var connection = new autobahn.Connection({url: 'ws://localhost:6800/poe/', realm: 'realm1'});
+var connection = new autobahn.Connection({url: 'ws://localhost:9080/', realm: 'nexus.realm1'});
 
 var RPC_CREATEORDER = "tridex.dev.orders.create";
 var RPC_CREATEORDER_TEST = "tridex.test.orders.create";
@@ -63,7 +63,7 @@ connection.onopen = function (session) {
             console.log("Result(Test):", res);
          }
       );
-   session.call('com.myapp.add', [4, 6]).then(
+   session.call('com.myapp.test', [4, 6]).then(
             function (res) {
                console.log("Result(add):", res);
             }

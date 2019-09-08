@@ -15,12 +15,12 @@ const dataTopic = "data.BTC-USD"
 func main() {
 	logger := log.New(os.Stdout, "", 0)
 	cfg := client.ClientConfig{
-		Realm:  "realm1",
+		Realm:  "nexus.reaml1",
 		Logger: logger,
 	}
 
 	// Connect subscriber session.
-	subscriber, err := client.ConnectNet("ws://localhost:8020/ws/", cfg)
+	subscriber, err := client.ConnectNet("ws://127.0.0.1:8080/", cfg)
 	if err != nil {
 		logger.Fatal(err)
 	}
